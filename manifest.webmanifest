@@ -7,5 +7,5 @@
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "description": "kyiv. dnipro. two unicyclers.",
-  "icons": [{"src": "/mural.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+  "icons": [{"src": "/mural-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable"}]
 }
