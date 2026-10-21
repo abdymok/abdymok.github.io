@@ -84,25 +84,52 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </nav>
 <div class="credit"><a href="https://abdymok.substack.com/" title="abdymok"><em>powered by abd<span class="y">y</span>mok</em></a></div>
 </div>
-<div class="film"><video autoplay muted playsinline preload="metadata" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
+<div class="film"><video autoplay muted playsinline preload="auto" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
 </main>
 <script>
 const film=document.querySelector('video');
 const portraitStart=8.5;
+let portraitSeekPending=false;
 function portraitMode(){return window.matchMedia('(max-width:700px) and (orientation:portrait)').matches;}
+function playFilm(){
+  const attempt=film.play();
+  if(attempt && attempt.catch) attempt.catch(()=>{});
+}
 function setPlayback(){
-  if(portraitMode()){
-    film.loop=false;
-    if(film.currentTime < portraitStart || film.currentTime >= film.duration - 0.1){film.currentTime=portraitStart;}
-    film.play().catch(()=>{});
-  }else{film.loop=true;}
+  if(!portraitMode()){
+    film.loop=true;
+    playFilm();
+    return;
+  }
+  film.loop=false;
+  if(film.readyState < 1) return;
+  if(film.currentTime < portraitStart || (Number.isFinite(film.duration) && film.currentTime >= film.duration - 0.1)){
+    if(portraitSeekPending) return;
+    portraitSeekPending=true;
+    const finishSeek=()=>{
+      portraitSeekPending=false;
+      film.removeEventListener('seeked',finishSeek);
+      playFilm();
+    };
+    film.addEventListener('seeked',finishSeek);
+    film.currentTime=portraitStart;
+  }else{
+    playFilm();
+  }
 }
 film.addEventListener('loadedmetadata',setPlayback);
+film.addEventListener('loadeddata',setPlayback);
+film.addEventListener('canplay',setPlayback);
 film.addEventListener('timeupdate',()=>{
-  if(portraitMode() && film.duration && film.currentTime >= film.duration - 0.05){film.currentTime=portraitStart;film.play().catch(()=>{});}
+  if(portraitMode() && film.duration && film.currentTime >= film.duration - 0.05){
+    film.currentTime=portraitStart;
+    film.addEventListener('seeked',playFilm,{once:true});
+  }
 });
-film.addEventListener('click',()=>film.paused?film.play():film.pause());
+film.addEventListener('click',()=>film.paused?playFilm():film.pause());
 window.addEventListener('resize',setPlayback);
+window.addEventListener('pageshow',setPlayback);
+film.load();
 </script>
 <script>
 /* Remove stale landing-page workers/caches that can keep an old video poster on iOS. */
