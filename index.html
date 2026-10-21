@@ -88,7 +88,25 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </main>
 <script>
 const film=document.querySelector('video');
-if(window.matchMedia('(max-width: 700px) and (pointer: coarse)').matches){film.setAttribute('poster','https://abdymok.github.io/40/evidence/monowheelers.png');}
+if(window.matchMedia('(max-width: 700px) and (pointer: coarse)').matches){
+  const cover=document.createElement('img');
+  cover.src='poster-m.webp';
+  cover.alt='';
+  cover.setAttribute('aria-hidden','true');
+  cover.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;pointer-events:none;z-index:1;background:#fff';
+  film.parentNode.appendChild(cover);
+  let gone=false;
+  const drop=()=>{
+    if(gone) return;
+    gone=true;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>cover.remove()));
+  };
+  if('requestVideoFrameCallback' in film){
+    film.requestVideoFrameCallback(drop);
+  } else {
+    film.addEventListener('timeupdate',()=>{if(film.currentTime>0) drop();},{once:true});
+  }
+}
 function startFilm(){
   if(!film) return;
   film.muted=true;
