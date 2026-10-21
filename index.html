@@ -165,7 +165,8 @@ setPlayback();
  const oldPlay=v.play.bind(v);
  v.play=function(){const p=oldPlay(); if(p&&p.then)p.then(()=>report('play resolved')).catch(e=>report('play rejected: '+e.name+' '+e.message)); else report('play returned no promise'); return p;};
  report('diagnostic armed');
- setTimeout(()=>{report('after 2 seconds');},2000);
+ setTimeout(()=>{try{v.load();report('forced load() called');}catch(e){report('load error: '+e.name+' '+e.message);}},300);
+ setTimeout(()=>{report('after 3 seconds');},3000);
 })();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{}))}</script>
