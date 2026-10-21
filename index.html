@@ -104,6 +104,26 @@ film.addEventListener('timeupdate',()=>{
 film.addEventListener('click',()=>film.paused?film.play():film.pause());
 window.addEventListener('resize',setPlayback);
 </script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{}))}</script>
+<script>
+/* Remove stale landing-page workers/caches that can keep an old video poster on iOS. */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",async()=>{
+    try{
+      const regs=await navigator.serviceWorker.getRegistrations();
+      const old=regs.filter(r=>new URL(r.scope).origin===location.origin);
+      const keys=await caches.keys();
+      const stale=keys.filter(k=>k.startsWith("abdymok-"));
+      if(old.length||stale.length){
+        await Promise.all(old.map(r=>r.unregister()));
+        await Promise.all(stale.map(k=>caches.delete(k)));
+        if(!sessionStorage.getItem("abdymok_clean_reload")){
+          sessionStorage.setItem("abdymok_clean_reload","1");
+          location.reload();
+        }
+      }
+    }catch(e){}
+  });
+}
+</script>
 </body>
 </html>
