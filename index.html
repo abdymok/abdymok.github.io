@@ -84,84 +84,25 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </nav>
 <div class="credit"><a href="https://abdymok.substack.com/" title="abdymok"><em>powered by abd<span class="y">y</span>mok</em></a></div>
 </div>
-<div class="film"><video autoplay muted playsinline preload="auto" webkit-playsinline aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
+<div class="film"><video autoplay muted playsinline preload="metadata" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
 </main>
 <script>
-if(location.search.indexOf('diag=1')>-1){
-(function(){
-  const v=document.querySelector('video');
-  const box=document.createElement('pre');
-  box.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:9999;margin:0;padding:6px 8px;font:11px/1.35 ui-monospace,Menlo,monospace;color:#0f0;background:rgba(0,0,0,.88);pointer-events:none;white-space:pre-wrap;max-height:48vh;overflow:hidden';
-  document.body.appendChild(box);
-  let plays=0,lastPlay='(not called yet)',rvfc=0,tu=0,taps=0,touches=0,lastTap='(none)';
-  const log=[];
-  ['loadstart','loadedmetadata','loadeddata','canplay','playing','pause','waiting','stalled','suspend','abort','emptied','error'].forEach(n=>v.addEventListener(n,()=>{log.push(n+'@'+Math.round(performance.now()));if(log.length>10)log.shift();}));
-  v.addEventListener('timeupdate',()=>{tu++;});
-  if('requestVideoFrameCallback' in v){const frame=()=>{rvfc++;v.requestVideoFrameCallback(frame);};v.requestVideoFrameCallback(frame);}
-  const originalPlay=v.play.bind(v);
-  v.play=function(){
-    plays++;
-    let p;
-    try { p=originalPlay(); lastPlay='pending'; }
-    catch(e) { lastPlay='THREW '+e.name+': '+e.message; throw e; }
-    if(p&&p.then)p.then(()=>{lastPlay='resolved @'+Math.round(performance.now());},e=>{lastPlay='REJECTED '+e.name+': '+e.message;});
-    return p;
-  };
-  document.addEventListener('touchstart',()=>{touches++;},{capture:true,passive:true});
-  document.addEventListener('click',e=>{taps++;lastTap=e.target.tagName+(typeof e.target.className==='string'&&e.target.className?'.'+e.target.className:'')+' @'+Math.round(e.clientX)+','+Math.round(e.clientY);},true);
-  setInterval(()=>{
-    const q=v.getVideoPlaybackQuality?v.getVideoPlaybackQuality():{};
-    const r=v.getBoundingClientRect();
-    const o=v.parentNode.querySelector('img');
-    box.textContent=
-      'paused '+v.paused+'  ready '+v.readyState+'  net '+v.networkState+'  err '+(v.error?v.error.code+' '+v.error.message:'-')+'\n'+
-      't '+v.currentTime.toFixed(2)+'  dur '+(isFinite(v.duration)?v.duration.toFixed(1):v.duration)+'  video '+v.videoWidth+'x'+v.videoHeight+'\n'+
-      'decoded frames '+(q.totalVideoFrames!==undefined?q.totalVideoFrames:'n/a')+'  dropped '+(q.droppedVideoFrames!==undefined?q.droppedVideoFrames:'n/a')+'  timeupdates '+tu+'\n'+
-      'rVFC api '+('requestVideoFrameCallback' in v)+'  fired '+rvfc+'  overlay '+(o?'ON':'removed')+'\n'+
-      'box '+Math.round(r.width)+'x'+Math.round(r.height)+' @'+Math.round(r.left)+','+Math.round(r.top)+'  viewport '+innerWidth+'x'+innerHeight+'  dpr '+devicePixelRatio+'\n'+
-      'play() calls '+plays+'  last: '+lastPlay+'\n'+
-      'touchstarts '+touches+'  clicks '+taps+'  last click: '+lastTap+'\n'+
-      log.join(' ');
-  },250);
-})();
-}
-</script>
-<script>
 const film=document.querySelector('video');
-if(window.matchMedia('(max-width: 700px) and (pointer: coarse)').matches){
-  const cover=document.createElement('img');
-  cover.src='poster-m.webp';
-  cover.alt='';
-  cover.setAttribute('aria-hidden','true');
-  cover.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;pointer-events:none;z-index:1;background:#fff';
-  film.parentNode.appendChild(cover);
-  let gone=false;
-  const drop=()=>{
-    if(gone) return;
-    gone=true;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>cover.remove()));
-  };
-  if('requestVideoFrameCallback' in film){
-    film.requestVideoFrameCallback(drop);
-  } else {
-    film.addEventListener('timeupdate',()=>{if(film.currentTime>0) drop();},{once:true});
-  }
+const portraitStart=8.5;
+function portraitMode(){return window.matchMedia('(max-width:700px) and (orientation:portrait)').matches;}
+function setPlayback(){
+  if(portraitMode()){
+    film.loop=false;
+    if(film.currentTime < portraitStart || film.currentTime >= film.duration - 0.1){film.currentTime=portraitStart;}
+    film.play().catch(()=>{});
+  }else{film.loop=true;}
 }
-function startFilm(){
-  if(!film) return;
-  film.muted=true;
-  film.playsInline=true;
-  film.loop=true;
-  const attempt=film.play();
-  if(attempt && typeof attempt.catch==='function') attempt.catch(()=>{});
-}
-film.addEventListener('loadedmetadata',startFilm);
-film.addEventListener('canplay',startFilm);
-film.addEventListener('playing',()=>{film.loop=true;});
-film.addEventListener('click',()=>{if(film.paused) startFilm();});
-window.addEventListener('pageshow',startFilm);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden) startFilm();});
-startFilm();
+film.addEventListener('loadedmetadata',setPlayback);
+film.addEventListener('timeupdate',()=>{
+  if(portraitMode() && film.duration && film.currentTime >= film.duration - 0.05){film.currentTime=portraitStart;film.play().catch(()=>{});}
+});
+film.addEventListener('click',()=>film.paused?film.play():film.pause());
+window.addEventListener('resize',setPlayback);
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{}))}</script>
 </body>
