@@ -87,5 +87,44 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 <div class="film"><video src="https://abdymok.github.io/unicyclers-fullbleed.mp4" autoplay muted loop playsinline preload="auto" webkit-playsinline aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"></video></div>
 </main>
 
+
+<script>
+(function () {
+  const video = document.querySelector('.film video');
+  if (!video) return;
+  video.muted = true;
+  video.playsInline = true;
+  function resumeVideo() {
+    if (video.readyState === 0) video.load();
+    const attempt = video.play();
+    if (attempt && typeof attempt.catch === 'function') {
+      attempt.catch(function () {
+        // Keep the page usable if Safari refuses autoplay: a tap can start playback.
+        video.addEventListener('click', function startOnTap() {
+          video.play().catch(function () {});
+        }, { once: true });
+      });
+    }
+  }
+  window.addEventListener('pageshow', resumeVideo);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) resumeVideo();
+  });
+  resumeVideo();
+
+  // Remove the old site worker and its caches, which can interfere with Safari back navigation.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      registrations.forEach(function (registration) { registration.unregister(); });
+    }).catch(function () {});
+  }
+  if ('caches' in window) {
+    caches.keys().then(function (keys) {
+      keys.filter(function (key) { return key.indexOf('abdymok-') === 0; })
+        .forEach(function (key) { caches.delete(key); });
+    }).catch(function () {});
+  }
+})();
+</script>
 </body>
 </html>
