@@ -80,7 +80,7 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </nav>
 <div class="credit"><a href="https://abdymok.substack.com/" title="abdymok"><em>powered by abd<span class="y">y</span>mok</em></a></div>
 </div>
-<div class="film"><video autoplay muted playsinline preload="metadata" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4?v=2" type="video/mp4"></video></div>
+<div class="film"><video autoplay muted playsinline preload="metadata" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
 </main>
 <script>
 const film=document.querySelector('video');
@@ -108,6 +108,7 @@ function setPlayback(){
   tryPlay();
 }
 film.addEventListener('loadedmetadata',setPlayback);
+film.addEventListener('loadeddata',setPlayback);
 film.addEventListener('canplay',setPlayback);
 film.addEventListener('seeked',tryPlay);
 film.addEventListener('timeupdate',()=>{
@@ -119,6 +120,7 @@ film.addEventListener('click',()=>film.paused?tryPlay():film.pause());
 window.addEventListener('resize',setPlayback);
 window.addEventListener('pageshow',setPlayback);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden) setPlayback();});
+setPlayback();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{}))}</script>
 </body>
