@@ -73,21 +73,18 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </main>
 <script>
 const film=document.querySelector('video');
-const portraitStart=8.5;
-function portraitMode(){return window.matchMedia('(max-width:700px) and (orientation:portrait)').matches;}
-function setPlayback(){
-  if(portraitMode()){
-    film.loop=false;
-    if(film.currentTime < portraitStart || film.currentTime >= film.duration - 0.1){film.currentTime=portraitStart;}
-    film.play().catch(()=>{});
-  }else{film.loop=true;}
+function tryPlay(){
+  const p=film.play();
+  if(p && typeof p.catch==='function') p.catch(()=>{});
 }
-film.addEventListener('loadedmetadata',setPlayback);
-film.addEventListener('timeupdate',()=>{
-  if(portraitMode() && film.duration && film.currentTime >= film.duration - 0.05){film.currentTime=portraitStart;film.play().catch(()=>{});}
-});
-film.addEventListener('click',()=>film.paused?film.play():film.pause());
-window.addEventListener('resize',setPlayback);
+// Test the full clip from its natural beginning; no seeking to 8.5 seconds.
+film.loop=true;
+film.addEventListener('loadedmetadata',tryPlay);
+film.addEventListener('canplay',tryPlay);
+film.addEventListener('click',()=>film.paused?tryPlay():film.pause());
+window.addEventListener('pageshow',tryPlay);
+window.addEventListener('resize',tryPlay);
+tryPlay();
 </script>
 </body>
 </html>
