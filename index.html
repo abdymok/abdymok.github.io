@@ -88,7 +88,7 @@ film.addEventListener('loadedmetadata',setPlayback);
 film.addEventListener('loadeddata',setPlayback);
 film.addEventListener('canplay',setPlayback);
 film.addEventListener('playing',()=>{film.style.visibility='visible';});
-film.addEventListener('click',()=>film.paused?tryPlay():film.pause());
+film.addEventListener('click',()=>{if(window.matchMedia("(max-width:700px) and (orientation:portrait)").matches)return;film.paused?tryPlay():film.pause();});
 window.addEventListener('pageshow',setPlayback);
 window.addEventListener('resize',setPlayback);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setPlayback();});
