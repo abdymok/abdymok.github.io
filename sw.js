@@ -1,4 +1,4 @@
-const CACHE_NAME="abdymok-v14";
+const CACHE_NAME="abdymok-v16";
 
 self.addEventListener("install",e=>e.waitUntil(self.skipWaiting()));
 
@@ -12,7 +12,11 @@ self.addEventListener("fetch",e=>{
   const request=e.request;
   if(request.method!=="GET")return;
   const url=new URL(request.url);
-  if(url.origin!==location.origin)return;
+  if(url.origin!==self.location.origin)return;
+
+  // Never intercept media or byte-range requests. Safari needs the server's
+  // native 206 Partial Content response for reliable MP4 playback/seeking.
+  if(request.headers.has("range") || /\.(mp4|mov|m4a|webm|m4v)$/i.test(url.pathname))return;
 
   e.respondWith(
     fetch(request,{cache:"no-store"})
