@@ -1,4 +1,4 @@
-const CACHE_NAME="abdymok-v15";
+const CACHE_NAME="abdymok-v14";
 
 self.addEventListener("install",e=>e.waitUntil(self.skipWaiting()));
 
