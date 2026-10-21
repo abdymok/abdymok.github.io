@@ -69,61 +69,28 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </nav>
 <div class="credit"><a href="https://abdymok.substack.com/" title="abdymok"><em>powered by abd<span class="y">y</span>mok</em></a></div>
 </div>
-<div class="film"><video autoplay muted playsinline webkit-playsinline preload="auto" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
+<div class="film"><video autoplay muted playsinline webkit-playsinline preload="auto" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4#t=8.5" type="video/mp4"></video></div>
 </main>
 <script>
 const film=document.querySelector('video');
-const portraitStart=8.5;
-let portraitSeekDone=false;
-let portraitSeekPending=false;
-function portraitMode(){return window.matchMedia('(max-width:700px) and (orientation:portrait)').matches;}
 function tryPlay(){
-  const result=film.play();
-  if(result && typeof result.catch==='function') result.catch(()=>{});
+  const p=film.play();
+  if(p && typeof p.catch==='function') p.catch(()=>{});
 }
 function setPlayback(){
   if(!film) return;
-  if(!portraitMode()){
-    film.loop=true;
-    tryPlay();
-    return;
-  }
-  film.loop=false;
-  // On iOS, do not seek at loadedmetadata: the decoder may not have
-  // produced a frame yet. Start muted playback, then seek only once data exists.
-  if(film.readyState >= 2 && film.duration > portraitStart &&
-     !portraitSeekDone && !portraitSeekPending){
-    portraitSeekPending=true;
-    tryPlay();
-    try{
-      film.currentTime=portraitStart;
-    }catch(error){
-      portraitSeekPending=false;
-    }
-    tryPlay();
-    return;
-  }
+  // Let iOS Safari decode and display the opening frame naturally.
+  // No programmatic seek during initial load.
+  film.loop=true;
   tryPlay();
 }
 film.addEventListener('loadedmetadata',setPlayback);
 film.addEventListener('loadeddata',setPlayback);
 film.addEventListener('canplay',setPlayback);
-film.addEventListener('seeked',()=>{
-  if(portraitSeekPending){
-    portraitSeekPending=false;
-    portraitSeekDone=true;
-    tryPlay();
-  }
-});
-film.addEventListener('ended',()=>{
-  if(portraitMode()){
-    portraitSeekPending=true;
-    try{film.currentTime=portraitStart;}catch(error){portraitSeekPending=false;}
-  }
-});
+film.addEventListener('playing',()=>{film.style.visibility='visible';});
 film.addEventListener('click',()=>film.paused?tryPlay():film.pause());
-window.addEventListener('resize',setPlayback);
 window.addEventListener('pageshow',setPlayback);
+window.addEventListener('resize',setPlayback);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setPlayback();});
 setPlayback();
 </script>
