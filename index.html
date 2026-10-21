@@ -60,8 +60,8 @@ html,body{background:#fff;color:#111}
 @media(max-width:700px) and (orientation:portrait){
 main{position:relative;display:block;width:100%;height:100dvh}
 .top{position:relative;z-index:2}
-.film{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:#fff;z-index:1}
-video{position:relative;left:auto;bottom:auto;display:block;width:auto;height:100%;max-width:none;max-height:none;margin:0;padding:0;object-fit:contain;object-position:center bottom;transform:none;border:0;outline:0}
+.film{position:fixed;inset:0;width:100%;height:100dvh;margin:0;padding:0;display:block;overflow:hidden;background:#fff;z-index:1}
+video{position:absolute;left:50%;bottom:0;display:block;width:auto;height:100%;max-width:none;max-height:none;margin:0;padding:0;object-fit:contain;object-position:center bottom;transform:translateX(-50%);border:0;outline:0}
 }
 @media(max-width:1000px) and (orientation:landscape){
 html,body{background:#fff;color:#111}
@@ -84,47 +84,75 @@ video{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:n
 </nav>
 <div class="credit"><a href="https://abdymok.substack.com/" title="abdymok"><em>powered by abd<span class="y">y</span>mok</em></a></div>
 </div>
-<div class="film"><video src="https://abdymok.github.io/unicyclers-fullbleed.mp4" autoplay muted loop playsinline preload="auto" webkit-playsinline aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"></video></div>
+<div class="film"><video autoplay muted playsinline preload="auto" webkit-playsinline aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
 </main>
-
-
 <script>
-(function () {
-  const video = document.querySelector('.film video');
-  if (!video) return;
-  video.muted = true;
-  video.playsInline = true;
-  function resumeVideo() {
-    if (video.readyState === 0) video.load();
-    const attempt = video.play();
-    if (attempt && typeof attempt.catch === 'function') {
-      attempt.catch(function () {
-        // Keep the page usable if Safari refuses autoplay: a tap can start playback.
-        video.addEventListener('click', function startOnTap() {
-          video.play().catch(function () {});
-        }, { once: true });
-      });
+const film=document.querySelector('video');
+const portraitStart=8.5;
+let portraitSeekDone=false;
+let portraitSeekPending=false;
+function portraitMode(){return window.matchMedia('(max-width:700px) and (orientation:portrait)').matches;}
+function tryPlay(){
+  const result=film.play();
+  if(result && typeof result.catch==='function') result.catch(()=>{});
+}
+function setPlayback(){
+  if(!film) return;
+  if(portraitMode()){
+    film.loop=false;
+    if(film.readyState >= 2 && film.duration > portraitStart &&
+       !portraitSeekDone && !portraitSeekPending &&
+       (film.currentTime < portraitStart || film.currentTime >= film.duration - 0.1)){
+      portraitSeekPending=true;
+      try{
+        film.currentTime=portraitStart;
+      }catch(error){
+        portraitSeekPending=false;
+        tryPlay();
+      }
+      return;
     }
+  }else{
+    film.loop=true;
   }
-  window.addEventListener('pageshow', resumeVideo);
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) resumeVideo();
-  });
-  resumeVideo();
-
-  // Remove the old site worker and its caches, which can interfere with Safari back navigation.
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-      registrations.forEach(function (registration) { registration.unregister(); });
-    }).catch(function () {});
+  tryPlay();
+}
+film.addEventListener('loadedmetadata',setPlayback);
+film.addEventListener('loadeddata',setPlayback);
+film.addEventListener('canplay',setPlayback);
+film.addEventListener('seeked',()=>{
+  portraitSeekPending=false;
+  portraitSeekDone=true;
+  tryPlay();
+});
+film.addEventListener('error',()=>{
+  portraitSeekPending=false;
+  tryPlay();
+});
+film.addEventListener('timeupdate',()=>{
+  if(portraitMode() && film.duration && film.currentTime >= film.duration - 0.05){
+    portraitSeekPending=true;
+    film.currentTime=portraitStart;
   }
-  if ('caches' in window) {
-    caches.keys().then(function (keys) {
-      keys.filter(function (key) { return key.indexOf('abdymok-') === 0; })
-        .forEach(function (key) { caches.delete(key); });
-    }).catch(function () {});
+});
+film.addEventListener('click',()=>film.paused?tryPlay():film.pause());
+document.querySelector('a.home').addEventListener('click',event=>{
+  if(location.pathname==='/' || location.pathname==='/index.html'){
+    event.preventDefault();
+    if(portraitMode() && film.duration && film.currentTime >= film.duration - 0.1){
+      portraitSeekDone=false;
+      portraitSeekPending=false;
+      film.currentTime=portraitStart;
+    }
+    setPlayback();
+    tryPlay();
   }
-})();
+});
+window.addEventListener('resize',setPlayback);
+window.addEventListener('pageshow',setPlayback);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden) setPlayback();});
+setPlayback();
 </script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{}))}</script>
 </body>
 </html>
