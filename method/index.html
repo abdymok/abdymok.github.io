@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Method — ukraine@war</title>
-<meta name="description" content="How the working figures in the ukraine@war infrastructure trackers are counted.">
+<meta name="description" content="How the ukraine@war infrastructure chronology documents incidents, counts civilian deaths and Kyiv air alerts, handles corrections and labels evidence.">
 <style>
 :root{color-scheme:light dark;--bg:#fff;--fg:#111110;--muted:#5e5d58;--rule:#d8d6cf;--red:#d00}
 @media(prefers-color-scheme:dark){:root{--bg:#111110;--fg:#ecebe6;--muted:#a2a19a;--rule:#34342f;--red:#ff4a3d}}
@@ -15,11 +15,16 @@ a{color:inherit;text-underline-offset:4px}
 .home{display:inline-block;margin-bottom:42px;text-decoration:none;font-size:15px;letter-spacing:.04em}
 .y{color:var(--red)}
 h1{font:400 38px/1.1 Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;margin:0 0 14px}
-.intro{font:400 20px/1.4 Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;color:var(--muted);margin:0 0 38px}
+.intro{font:400 20px/1.4 Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;color:var(--muted);margin:0 0 24px}
+.updated{font-size:14px;color:var(--muted);margin:0 0 34px}
 section{border-top:1px solid var(--rule);padding:20px 0}
 h2{font:400 22px/1.25 Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;margin:0 0 8px}
+h3{font:500 17px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;margin:16px 0 6px}
 p{margin:0 0 12px}
 p:last-child{margin-bottom:0}
+ul{padding-left:22px;margin:8px 0 12px}
+li{margin:0 0 7px}
+.muted{color:var(--muted)}
 .back{display:inline-block;margin-top:36px;color:var(--muted)}
 </style>
 </head>
@@ -27,28 +32,79 @@ p:last-child{margin-bottom:0}
 <main>
 <a class="home" href="/"><span>abd<span class="y">y</span>mok</span></a>
 <h1>Method</h1>
-<p class="intro">How the numbers are counted.</p>
+<p class="intro">How the record is assembled, what its figures mean, and how corrections are handled.</p>
+<p class="updated">Scope reviewed October 22, 2026. The infrastructure chronology covers reports dated September 28–October 22; the dashboard measures labelled “since October 1” use October 1 as their start date. Figures change as reporting develops.</p>
+
 <section>
-<h2>Kyiv air alerts</h2>
-<p>The count and cumulative time are working figures assembled from listed alert intervals. They are provisional, may differ between trackers, and exclude unresolved intervals where the start or end cannot be reconciled confidently.</p>
-<p><a href="/40/articles/critical-infrastructure-damage.html#alert-statistics-method">Read the alert-count methodology</a></p>
+<h2>Working in a live war zone</h2>
+<p>We are reporting from Kyiv during an active war, under conditions that are uncomfortable, dangerous and likely to become more difficult and confusing. We do our best to be fair and accurate with the information available to us, but this is a working record, not a complete census of every attack, damaged site or civilian death.</p>
+<p>Prosecutors, police, city and regional administrations, emergency services and other official bodies may publish different figures or update them at different times. After a major strike, casualty counts often rise as rescue operations continue and additional victims are found. Earlier figures are not necessarily final; later revisions can also correct an initial report. We attribute figures to their sources, retain the distinction between a source's statement and our own observation, and revise the record when better information becomes available.</p>
+<p>Uncertainty is not a reason to hide a reported death or to pretend the count is complete. Nor is it a licence to invent a margin. We publish the best-supported working figure we can assemble, explain its limits and correct it as the record changes.</p>
 </section>
+
 <section>
 <h2>Dead civilians</h2>
-<p>The displayed figure is an incident-level subtotal drawn from official or media reporting on incidents recorded in the chronology. It is not a national total, and overlapping regional totals are not added where they could duplicate incident-level figures.</p>
-<p><a href="/40/articles/critical-infrastructure-damage.html#civilian-deaths-method">Read the civilian-death methodology</a></p>
+<p>The dashboard displays an approximate incident-level subtotal of civilian deaths reported in selected incidents documented in the chronology since October 1. It is not an official national total and does not cover every civilian death in Ukraine. The number is provisional and may rise as rescue operations finish, missing people are accounted for and authorities revise reports.</p>
+<p>We compare reports from Ukrainian authorities and Ukrainian and international media. We do not add broad regional totals to incident-level figures where doing so could count the same deaths twice. Where sources disagree, we attribute the figures and reconcile them where possible rather than silently treating different reports as separate deaths. We do not add an unquantified estimate for deaths that may be missing from published reporting.</p>
+<p>The dashboard subtotal is approximately 121 in the October 22 snapshot. It includes the 42-year-old woman killed in Lymanivka, Lozova community, Kharkiv region, and one person killed in the overnight attack on Kyiv on October 22, according to the respective regional and city administrations. It includes nine people killed in the October 17 Russian air strike on Sloviansk, with the final toll reported by Sloviansk City Administration head Vadym Liakh on October 21 after rubble clearance; two people killed in Korotych, Kharkiv region; two people killed in Sviatoshynsky district in Kyiv on October 21; three heating-supply workers killed in Kramatorsk on October 20, according to the <a href="https://t.me/kramatorsk_rada/28367" target="_blank" rel="noopener">Kramatorsk City Council</a>; one death reported in Holosiivsky district on October 20; the 21-year-old woman killed in Kyiv on October 19; three deaths reported in Kharkiv on October 16; at least five earlier deaths reported in Kyiv; six in Lutsk on October 14; three in Kirovohrad region on October 15; and three people killed in the Chabany drone attack on October 20, reported by the <a href="https://koda.gov.ua/troye-lyudej-zagynuly-shhe-chetvero-distaly-poranennya-vnaslidok-udaru-vorozhogo-drona-po-dorozi-poblyzu-chabaniv/" target="_blank" rel="noopener">Kyiv Regional Military Administration</a>, <a href="https://npu.gov.ua/news/troie-liudei-zahynuly-chetvero-postrazhdaly-politsiia-kyivshchyny-dokumentuie-naslidky-vorozhoho-udaru-po-trasi-u-chabanakh" target="_blank" rel="noopener">Kyiv regional police</a> and independent media. The chronology contains the incident entries and source notes; the total may change as reports are reconciled.</p>
+<p><a href="/40/articles/critical-infrastructure-damage.html#civilian-deaths-method">See the current chronology and its latest casualty updates.</a></p>
 </section>
+
+<section>
+<h2>Kyiv air alerts</h2>
+<p>The dashboard's alert count and cumulative duration are provisional working figures for Kyiv from October 1. They are assembled from compiler-supplied alert intervals and cross-checked against alert trackers; they are not a reconstructed official total. The start and end times may differ between trackers or be rounded in a supplied snapshot. Unresolved intervals are excluded rather than assigned guessed durations.</p>
+<p>The October 22 snapshot recorded 149 alerts and approximately 141 hours 56 minutes under alert, including an alert beginning at 11:22 that was reported as six minutes old in the supplied snapshot. The calculation used a baseline of 140 alerts and approximately 135 hours 16 minutes through October 21 at 08:55, then added seven supplied intervals on October 21–22, followed by the 08:51–09:41 interval and the active 11:22 alert. The resulting total is provisional; rounded source durations mean the cumulative time is approximate. Unresolved October 8 and October 16 intervals and a separate 04:15 field report on October 17 remain excluded.</p>
+<p>The reference trackers are <a href="https://alerts.khanoff.com/en" target="_blank" rel="noopener">Khanoff</a> and <a href="https://alerts.in.ua/" target="_blank" rel="noopener">alerts.in.ua</a>; <a href="https://chotchaev.com/en" target="_blank" rel="noopener">Chotchaev</a> is used as a cross-check. These services may lag or disagree and are not fully independent because alert boundaries may rely on Kyiv Digital history. A general Kyiv air alert does not prove that a ballistic threat was identified with useful lead time.</p>
+<p><a href="/40/articles/critical-infrastructure-damage.html#alert-statistics-method">See the chronology's alert notes and dated updates.</a></p>
+</section>
+
 <section>
 <h2>Facilities and bridge strikes</h2>
-<p>Facilities are counted as identified sites, not as a precise count of buildings. Repeated strikes on the same facility do not create new entries. Bridge-strike figures count reported hits, not a structural-damage assessment.</p>
-<p><a href="/40/articles/critical-infrastructure-damage.html#facilities-count-method">Facility-count methodology</a> · <a href="/40/articles/critical-infrastructure-damage.html#bridge-strikes-method">Bridge-strike methodology</a></p>
+<p>The working site list covers physical facilities or separately identified sites reported struck, damaged or credibly affected since October 1. It includes residential and commercial premises as well as infrastructure. An entry is not necessarily one physical structure: one entry may group multiple premises or facilities, while a broad-area debris report may be excluded if a distinct location cannot be established. Repeated strikes on the same facility do not automatically create new entries. The current dashboard shows 47 entries in the working list, not 47 verified physical sites.</p>
+<p>The bridge figure counts reported hits on Kyiv bridges since October 1, not a structural-damage assessment. The working count is six: four reported hits involving the South Bridge and two involving the North Bridge. A later smoke plume was not counted as an additional hit because the chronology did not have a linked, independently verifiable source establishing a separate impact.</p>
+<p><a href="/40/articles/critical-infrastructure-damage.html#facilities-count-list">Read the working facility list</a> · <a href="/40/articles/critical-infrastructure-damage.html#bridge-strikes-method">Read the bridge-count note</a>.</p>
 </section>
+
 <section>
-<h2>Data centers</h2>
-<p>The data-center chronology is maintained separately, with incident entries and source notes attached to the reports.</p>
-<p><a href="/40/articles/data-center-damage.html">Read the data-center chronology</a></p>
+<h2>Evidence labels</h2>
+<p>Labels describe the source or evidentiary basis of an entry. They are not a numerical confidence score, and a label does not by itself mean that every detail has been independently confirmed.</p>
+<ul>
+<li><strong>Official</strong> — a statement or report from a public authority, including police, prosecutors, emergency services, the Air Force, or city and regional administrations.</li>
+<li><strong>Operator or company</strong> — information published by an infrastructure operator, utility, transport provider or affected business.</li>
+<li><strong>Media</strong> — reporting by a news organisation. The source note should identify the report; media coverage is not automatically independent corroboration of an official statement.</li>
+<li><strong>Eyewitness</strong> — the author's direct observation, with time and place given where relevant. It establishes what was observed, not necessarily the weapon, cause or full extent of damage.</li>
+<li><strong>Attributed</strong> — a claim assigned to a named person or institution that has not been independently established in the entry.</li>
+<li><strong>Tracker</strong> — a timestamp or status recorded by an alert or event-tracking service; tracker times may lag, be rounded or share underlying data.</li>
+<li><strong>Unverified</strong> — a claim for which adequate corroboration has not been found. It is not treated as established fact, and is excluded from quantitative totals where appropriate.</li>
+<li><strong>Editorial</strong> — a calculation, synthesis or interpretation made by the compiler rather than a direct quotation from a source.</li>
+</ul>
+<p>Several evidence types may inform an entry. Source links are supplied where available. If an original post disappears or a source changes its report, that limitation may affect how confidently the entry can be checked later.</p>
 </section>
-<a class="back" href="/">Return to the landing page →</a>
+
+<section>
+<h2>Sources and attribution</h2>
+<p>We prefer direct statements from relevant Ukrainian authorities, emergency services, operators and companies, and use Ukrainian and international media to corroborate or contextualise them. We try to link to the specific source item rather than a general channel feed. A source's figure is attributed to that source; it is not presented as our independent finding unless we have independently established it.</p>
+<p>Reports can be deleted, edited or moved. Where practical, important source records may be preserved, but not every link can be archived and a live link is not a guarantee that the source remains unchanged. Absence of a surviving link does not itself prove a claim false; it does mean that the claim is harder to verify.</p>
+</section>
+
+<section>
+<h2>Corrections and updates</h2>
+<p>This is a working chronology updated when credible new reporting becomes available and time permits. It is not staffed continuously, and an update may lag events, particularly during an attack. We do not promise a fixed daily publication time.</p>
+<p>When a source revises a casualty figure, location, damage report or attribution, we update the relevant entry and the dashboard when the change affects a displayed measure. Material changes are described in the chronology's public update history. We aim to preserve the substance of earlier reporting where useful to show how a figure changed, rather than silently erasing a material correction. Technical maintenance is not a factual correction and should be kept separate from the public corrections record.</p>
+<p>Corrections are made when credible new evidence warrants them. If a reader identifies an error or has a relevant primary source, please contact the author through the <a href="https://abdymok.substack.com/" target="_blank" rel="noopener">ukraine@war Substack publication</a>. Include the chronology entry or date, the claim in question, and the source supporting the correction.</p>
+</section>
+
+<section>
+<h2>Safety and limits</h2>
+<p>We do not publish information simply because it is available. During an ongoing attack, precise impact locations, imagery of air-defence activity and other details may create risks; publication decisions must account for timing, source reliability and operational sensitivity. A published location is approximate unless a source establishes more. Images may also reveal identifying details that are not obvious from their captions.</p>
+<p>This record is assembled under wartime conditions. It is a best-effort public account, open to correction, and should not be read as a complete national casualty tally or an exhaustive inventory of damage.</p>
+</section>
+
+<section>
+<h2>Related records</h2>
+<p><a href="/40/articles/critical-infrastructure-damage.html">Infrastructure chronology</a> · <a href="/40/articles/data-center-damage.html">Data-center chronology</a> · <a href="/">Return to the landing page</a>.</p>
+</section>
+<a class="back" href="/40/articles/critical-infrastructure-damage.html">← Return to the infrastructure chronology</a>
 </main>
 </body>
 </html>
