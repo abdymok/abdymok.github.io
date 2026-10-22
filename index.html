@@ -3,20 +3,113 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" type="image/png" href="https://abdymok.github.io/40/evidence/monowheelers.png">
-<title>abdymok</title>
-<meta name="description" content="kyiv. dnipro. monowheelers">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://abdymok.github.io/">
-<meta property="og:title" content="abdymok">
-<meta property="og:description" content="kyiv. dnipro. monowheelers">
-<meta property="og:image" content="https://abdymok.github.io/40/evidence/monowheelers.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="abdymok">
-<meta name="twitter:description" content="kyiv. dnipro. monowheelers">
-<meta name="twitter:image" content="https://abdymok.github.io/40/evidence/monowheelers.png">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#ffffff">
+<title>ukraine@war</title>
+<meta name="description" content="Dispatches from Kyiv, and the record behind them.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M3 32H45M7.5 32V26M18 32V26M28.5 32V26M39 32V14'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #111110;
+    --muted: #5e5d58;
+    --rule: #d8d6cf;
+    --red: #d00;
+    --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.4;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  svg { display: block; flex: none; }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* header */
+  .bar { padding: 14px 0 6px; }
+  .home {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 44px; padding-right: 12px;
+    font-size: 15px; letter-spacing: 0.04em;
+  }
+  .y { color: var(--red); }
+  .home:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+  /* emblem: drawn on near-white, so it is blended into the page colour */
+  .emblem { margin: 4px -20px 36px; }
+  .emblem img {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 3 / 1; object-fit: cover; object-position: 50% 58%;
+    filter: brightness(1.03);
+    mix-blend-mode: multiply;
+  }
+  @media (prefers-color-scheme: dark) {
+    .emblem img { filter: brightness(1.03) invert(1); mix-blend-mode: screen; }
+  }
+
+  /* title and navigation */
+  h1 {
+    margin: 0;
+    font: 400 34px/1.1 var(--serif);
+    letter-spacing: -0.01em;
+  }
+  .tagline {
+    margin: 12px 0 28px;
+    max-width: 26ch;
+    font: 400 19px/1.35 var(--serif);
+    color: var(--muted);
+  }
+
+  nav ul { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
+  nav li { border-top: 1px solid var(--rule); }
+  nav a {
+    display: grid; grid-template-columns: 48px 1fr auto; align-items: center; column-gap: 18px;
+    min-height: 76px; padding: 14px 0;
+  }
+  nav a:active { background: color-mix(in srgb, var(--fg) 6%, transparent); }
+  .label { display: block; font-size: 18px; line-height: 1.25; }
+  .desc { display: block; margin-top: 2px; font-size: 15px; line-height: 1.35; color: var(--muted); }
+  .arrow { font-size: 18px; color: var(--muted); padding-left: 8px; }
+  nav a:hover .label { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  nav a:hover .arrow { color: var(--fg); }
+
+  /* footer */
+  footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 56px; padding-bottom: 20px;
+    font-size: 15px; color: var(--muted);
+  }
+  footer a { display: inline-block; padding: 12px 0 12px 16px; }
+  footer a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+  /* wider screens: title left, navigation right */
+  @media (min-width: 860px) {
+    .wrap { padding: 0 32px; }
+    .bar { padding-top: 24px; }
+    .emblem { margin: 16px 0 64px; }
+    .grid { display: grid; grid-template-columns: 5fr 7fr; column-gap: 72px; align-items: start; }
+    h1 { font-size: 44px; padding-top: 22px; }
+    .tagline { font-size: 21px; margin-bottom: 0; }
+    footer { margin-top: 96px; padding-bottom: 32px; }
+  }
+</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3ZLJ9QQWD"></script>
 <script>
 window.dataLayer=window.dataLayer||[];
@@ -24,86 +117,68 @@ function gtag(){dataLayer.push(arguments)}
 gtag('js',new Date());
 gtag('config','G-S3ZLJ9QQWD');
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}
-body{background:#fff;color:#111;font-family:Spectral,Georgia,"Times New Roman",serif;font-weight:400}
-main{width:100%;height:100dvh;display:flex;flex-direction:column}
-.top{padding:5vh 5vw 2.5vh;font-size:15px;line-height:1.45}
-.topline{display:block}
-.top a{color:inherit;text-decoration:none}
-.top a:hover{opacity:.62}
-.marks{display:flex;align-items:center;gap:14px;height:32px}
-.marks a{display:flex;align-items:center;justify-content:center;height:32px}
-.marks a.home{font-size:13px;line-height:1;letter-spacing:.01em}
-.marks img{display:block;width:auto;height:32px;max-width:48px}
-.marks img.infrastructure{width:72px;max-width:72px;height:auto}
-.credit{margin-top:20px;font-size:11.5px}
-.credit .y{color:#b00000}
-.film{flex:1;min-height:0;width:100%;display:flex;align-items:flex-end;justify-content:center;background:#fff;overflow:hidden}
-video{display:block;width:100%;height:auto;max-height:100%;object-fit:contain;object-position:center bottom;background:#fff;cursor:pointer;filter:none;border:0;outline:0}
-@media(max-width:700px){
-.top{padding:4vh 20px 2.5vh;font-size:14px}
-.topline{display:block}
-.marks{height:28px;gap:12px}
-.marks a{height:28px}
-.marks img{height:28px;max-width:42px}
-.marks img.infrastructure{width:62px;max-width:62px}
-.credit{margin-top:18px;font-size:11px}
-}
-@media(max-width:700px) and (orientation:portrait){
-main{position:relative;display:block;width:100%;height:100dvh}
-.top{position:relative;z-index:2}
-.film{position:fixed;inset:0;width:100%;height:100dvh;margin:0;padding:0;display:block;overflow:hidden;background:#fff url("poster-m.webp") no-repeat center bottom;background-size:contain;z-index:1}
-video{display:none}
-}
-@media(max-width:1000px) and (orientation:landscape){
-main{position:relative;display:block;width:100%;height:100dvh}
-.top{position:relative;z-index:2;padding:2vh 20px 0}
-.film{position:fixed;inset:0;width:100%;height:100dvh;margin:0;padding:0;display:block;overflow:hidden;background:#fff url("poster-m.webp") no-repeat center bottom;background-size:contain;z-index:1}
-video{display:none}
-}
-</style>
 </head>
 <body>
-<main>
-<div class="top">
-<nav class="marks" aria-label="Archive">
-<a class="home" href="https://abdymok.github.io/" title="Home"><img src="https://abdymok.github.io/40/articles/home.svg" alt="home"></a>
-<a href="https://abdymok.github.io/40/" title="40"><img src="mural.svg" alt="40"></a>
-<a href="https://abdymok.github.io/40/articles/critical-infrastructure-damage.html" title="infrastructure"><img class="infrastructure" src="infrastructure.svg" alt="infrastructure"></a>
-<a href="https://abdymok.github.io/40/articles/data-center-damage.html" title="data center"><img src="data-center.svg" alt="data center"></a>
-</nav>
-<div class="credit"><a href="https://abdymok.substack.com/" title="abdymok"><em>powered by abd<span class="y">y</span>mok</em></a></div>
+<div class="wrap">
+
+  <header class="bar">
+    <a class="home" href="/" aria-label="Home" aria-current="page">
+      <svg width="32" height="32" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><path d="M15 42V6H33V42M9 42H39"/></svg>
+      <span>abd<span class="y">y</span>mok</span>
+    </a>
+  </header>
+
+  <main>
+    <figure class="emblem">
+      <img src="https://raw.githubusercontent.com/abdymok/new_landing_page/main/monowheeler.png" width="1743" height="902" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
+    </figure>
+
+    <div class="grid">
+      <div class="intro">
+        <h1>ukraine@war</h1>
+        <p class="tagline">Dispatches from Kyiv, and the record behind them.</p>
+      </div>
+
+      <nav aria-label="Sections">
+        <ul>
+          <li>
+            <a href="/40/articles/critical-infrastructure-damage.html">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><path d="M1 29 H47"/><path d="M5 29 Q24 1 43 29"/><path d="M14.5 29 V18.5"/><path d="M33.5 29 V18.5"/><path d="M20.5 33 L27.5 25.5"/></svg>
+              <span><span class="label">Infrastructure</span><span class="desc">Damage to critical infrastructure</span></span>
+              <span class="arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="/40/articles/data-center-damage.html">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><rect x="4" y="4" width="10" height="10"/><rect x="19" y="4" width="10" height="10"/><path d="M19 9 H29"/><rect x="34" y="4" width="10" height="10"/><rect x="4" y="19" width="10" height="10"/><path d="M4 24 H14"/><rect x="19" y="19" width="10" height="10"/><rect x="4" y="34" width="10" height="10"/><rect x="19" y="36" width="10" height="10"/><rect x="34" y="34" width="10" height="10"/><path d="M39 34 V44"/></svg>
+              <span><span class="label">Data center</span><span class="desc">Damage to data centers</span></span>
+              <span class="arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="/method/">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><path d="M7.5 6 V42"/><path d="M18 6 V42"/><path d="M28.5 6 V42"/><path d="M39 6 V42"/><path d="M3 33 L45 15"/></svg>
+              <span><span class="label">Method</span><span class="desc">How the numbers are counted</span></span>
+              <span class="arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="/mural/">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><defs><clipPath id="fragment"><polygon points="4,3.5 44,4.5 45,44 3,45"/></clipPath></defs><g clip-path="url(#fragment)"><path d="M0 31 C11 7 24 41 49 13" stroke-width="2.8"/><path d="M17 0 C13 15 22 30 14 49" stroke-width="1.7"/><path d="M27 31 L42 35" stroke-width="3.4"/><path d="M30 9 C39 2 44 12 34 17" stroke-width="1.5"/><path d="M6 41 L12 35" stroke-width="1.4"/></g></svg>
+              <span><span class="label">Mural</span><span class="desc">A gallery of ukraine@war posts</span></span>
+              <span class="arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </main>
+
+  <footer>
+    <span>Kyiv</span>
+    <a href="https://abdymok.substack.com">Substack</a>
+  </footer>
+
 </div>
-<div class="film"><video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="poster-m.webp" aria-label="Black and white video of two unicyclers beside the Dnipro in Kyiv"><source src="unicyclers-fullbleed.mp4" type="video/mp4"></video></div>
-</main>
-<script>
-const film=document.querySelector('video');
-function tryPlay(){
-  const p=film.play();
-  if(p && typeof p.catch==='function') p.catch(()=>{});
-}
-function setPlayback(){
-  if(!film) return;
-  // Let iOS Safari decode and display the opening frame naturally.
-  // No programmatic seek during initial load.
-  film.loop=true;
-  tryPlay();
-}
-film.addEventListener('loadedmetadata',setPlayback);
-film.addEventListener('loadeddata',setPlayback);
-film.addEventListener('canplay',setPlayback);
-film.addEventListener('playing',()=>{film.style.visibility='visible';});
-film.addEventListener('click',()=>{if(window.matchMedia("(max-width:700px) and (orientation:portrait)").matches)return;film.paused?tryPlay():film.pause();});
-window.addEventListener('pageshow',setPlayback);
-window.addEventListener('resize',setPlayback);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)setPlayback();});
-setPlayback();
-</script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{}))}</script>
 </body>
 </html>
