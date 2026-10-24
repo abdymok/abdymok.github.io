@@ -34,7 +34,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center}
   --turn:60s;
   position:relative;width:var(--size);height:var(--size);margin:6px auto 64px;
 }
-.track{position:absolute;left:calc(50% - var(--R));top:calc(50% - var(--R));width:calc(var(--R)*2);height:calc(var(--R)*2);border:1px solid #f3d83b;border-radius:50%;background:#fff;}
+.track{position:absolute;left:calc(50% - var(--R));top:calc(50% - var(--R));width:calc(var(--R)*2);height:calc(var(--R)*2);border:1px solid #f3d83b;border-radius:50%;background:#e32636;}
 .ring{position:absolute;inset:0;animation:turn var(--turn) linear infinite;animation-play-state:var(--play,running)}
 .unspin{animation:unturn var(--turn) linear infinite;animation-play-state:var(--play,running)}
 @keyframes turn{to{transform:rotate(360deg)}}
