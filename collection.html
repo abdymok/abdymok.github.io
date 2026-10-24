@@ -281,7 +281,12 @@ footer a { padding: 10px 0 10px 12px; }
 }
 
 @media(orientation:landscape) and (max-height:500px) {
-  .orbit { transform: translateY(-27%); }
+  .orbit {
+    --size: clamp(190px, min(100vw - 40px, 100svh - 180px), 420px);
+    --icon: clamp(34px, calc(var(--size) * .16), 42px);
+    margin: 0 auto;
+    transform: translateY(-8%);
+  }
 }
 
 @media(prefers-reduced-motion:reduce) {
