@@ -214,7 +214,7 @@ gtag('config','G-S3ZLJ9QQWD');
 (function () {
   var root = document.documentElement;
   var buttons = document.querySelectorAll('[data-theme-choice]');
-  var metaTheme = document.querySelector('meta[name="theme-color"][media]');
+  var themeMetas = document.querySelectorAll('meta[name="theme-color"]');
   var media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
   function systemTheme() {
@@ -226,10 +226,10 @@ gtag('config','G-S3ZLJ9QQWD');
       button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === theme));
     });
     var themeColor = theme === 'dark' ? '#111110' : '#ffffff';
-    if (metaTheme) {
-      metaTheme.removeAttribute('media');
-      metaTheme.setAttribute('content', themeColor);
-    }
+    themeMetas.forEach(function (meta) {
+      meta.removeAttribute('media');
+      meta.setAttribute('content', themeColor);
+    });
     if (save) {
       try { localStorage.setItem('ukraine-at-war-theme', theme); } catch (e) {}
     }
@@ -261,7 +261,9 @@ gtag('config','G-S3ZLJ9QQWD');
         buttons.forEach(function (button) {
           button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === systemTheme()));
         });
-        if (metaTheme) metaTheme.setAttribute('content', systemTheme() === 'dark' ? '#111110' : '#ffffff');
+        themeMetas.forEach(function (meta) {
+          meta.setAttribute('content', systemTheme() === 'dark' ? '#111110' : '#ffffff');
+        });
       }
     });
   }
