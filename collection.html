@@ -60,12 +60,11 @@ html.still .orbit{--play:paused}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;padding-bottom:22px;color:var(--muted);font-size:14px}
-footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;align-items:center}
-.theme-choice button{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;text-underline-offset:4px;min-height:44px;min-width:44px;padding:12px 8px}
-.theme-choice button[aria-pressed="true"]{color:var(--fg);text-decoration:underline}
-.theme-choice .sep{width:1px;height:14px;background:var(--rule)}
+footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items:center}
+.motion-choice button{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;text-underline-offset:4px;min-height:44px;min-width:44px;padding:12px 8px}
+.motion-choice button[aria-pressed="true"]{color:var(--fg);text-decoration:underline}
 @media(min-width:760px){.wrap{padding:0 32px}.bar{padding-top:24px}footer{margin-top:20px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.theme-choice .sep,[data-motion]{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}[data-motion]{display:none}}
 </style>
 
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3ZLJ9QQWD');</script>
@@ -125,7 +124,7 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
 
 </div>
 </main>
-<footer><span aria-hidden="true">Kyiv</span><a href="https://abdymok.substack.com">Substack</a></footer>
+<footer><span aria-hidden="true">Kyiv</span><div class="motion-choice"><button type="button" data-motion aria-pressed="false">still</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
 </div>
 <script>
 /* still/turn switch */
