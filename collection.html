@@ -121,8 +121,6 @@ main { flex: 1; display: flex; flex-direction: column; justify-content: center; 
 .orbit:has(.item:hover),
 .orbit:has(.item:focus-visible) { --play: paused; }
 
-html.still .orbit { --play: paused; }
-
 .spoke {
   position: absolute;
   left: 50%;
@@ -259,22 +257,6 @@ footer {
 
 footer a { padding: 10px 0 10px 12px; }
 
-.motion {
-  appearance: none;
-  border: 1px solid var(--rule);
-  border-radius: 50px;
-  background: transparent;
-  color: var(--fg);
-  font: inherit;
-  font-size: 14px;
-  cursor: pointer;
-  min-height: 44px;
-  min-width: 64px;
-  padding: 8px 14px;
-}
-
-.motion[aria-pressed="true"] { border-color: var(--fg); }
-
 @media(min-width:760px) {
   .wrap { padding: 0 32px; }
   .bar { padding-top: 24px; }
@@ -287,7 +269,6 @@ footer a { padding: 10px 0 10px 12px; }
     margin: 0 auto;
     transform: translateY(-8%);
   }
-  .motion { display: none; }
   .line { top: calc(var(--size) * .015); }
 }
 
@@ -384,7 +365,6 @@ gtag('config', 'G-S3ZLJ9QQWD');
 
 <footer>
   <span aria-hidden="true">kyiv</span>
-  <button class="motion" type="button" data-motion aria-pressed="false">still</button>
   <a href="https://abdymok.substack.com">substack</a>
 </footer>
 </div>
@@ -443,12 +423,7 @@ gtag('config', 'G-S3ZLJ9QQWD');
     a.addEventListener('blur', off);
   });
 
-  var button = document.querySelector('[data-motion]');
-  button.addEventListener('click', function(){
-    var still = document.documentElement.classList.toggle('still');
-    button.setAttribute('aria-pressed', String(still));
-    button.textContent = still ? 'turn' : 'still';
-  });
+
 })();
 </script>
 </body>
