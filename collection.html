@@ -47,9 +47,12 @@ html.still .orbit{--play:paused}
   height:var(--len);top:calc(50% - var(--len));
   transform-origin:0 var(--len);transform:rotate(var(--a))}
 .node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(var(--R)*-1))}
-.aspect-node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(var(--distance));pointer-events:none}
-.aspect-node .unspin{position:relative}
-.aspect-icon{display:block;width:clamp(18px,calc(var(--size)*.055),34px);height:clamp(18px,calc(var(--size)*.055),34px);transform:translate(-50%,-50%)}
+.aspect-node{position:absolute;left:50%;top:50%;width:44px;height:44px;transform:rotate(var(--a)) translateY(var(--distance));pointer-events:auto}
+.aspect-node .unspin{position:relative;width:44px;height:44px;display:block}
+.aspect-node .upright{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.aspect-icon{display:block;width:clamp(18px,calc(var(--size)*.055),34px);height:clamp(18px,calc(var(--size)*.055),34px)}
+.aspect-link{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.aspect-link:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 @media(prefers-color-scheme:dark){.aspect-icon{filter:invert(1)}}
 html[data-theme="light"] .aspect-icon{filter:none}
 html[data-theme="dark"] .aspect-icon{filter:invert(1)}
@@ -86,23 +89,23 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
     <i class="spoke" style="--a:300deg" aria-hidden="true"></i>
 
 
-    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.28)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/balcony-inner.svg" alt=""></div></div></div>
-    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.65)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/balcony-outer.svg" alt=""></div></div></div>
+    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/mural/balcony/" class="aspect-link" aria-label="balcony"><img class="aspect-icon" src="/orbit-icons/balcony-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/mural/balcony/" class="aspect-link" aria-label="balcony"><img class="aspect-icon" src="/orbit-icons/balcony-outer.svg" alt=""></a></div></div></div>
 
-    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.28)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/dnipro-inner.svg" alt=""></div></div></div>
-    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.65)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/dnipro-outer.svg" alt=""></div></div></div>
+    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/40/dnipro/" class="aspect-link" aria-label="dnipro"><img class="aspect-icon" src="/orbit-icons/dnipro-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/dnipro/" class="aspect-link" aria-label="dnipro"><img class="aspect-icon" src="/orbit-icons/dnipro-outer.svg" alt=""></a></div></div></div>
 
-    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.28)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/40-inner.svg" alt=""></div></div></div>
-    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.65)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/40-outer.svg" alt=""></div></div></div>
+    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/40/" class="aspect-link" aria-label="40"><img class="aspect-icon" src="/orbit-icons/40-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/" class="aspect-link" aria-label="40"><img class="aspect-icon" src="/orbit-icons/40-outer.svg" alt=""></a></div></div></div>
 
-    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.28)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/67-inner.svg" alt=""></div></div></div>
-    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.65)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/67-outer.svg" alt=""></div></div></div>
+    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/mural/" class="aspect-link" aria-label="67"><img class="aspect-icon" src="/orbit-icons/67-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/mural/" class="aspect-link" aria-label="67"><img class="aspect-icon" src="/orbit-icons/67-outer.svg" alt=""></a></div></div></div>
 
-    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.28)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/20-inner.svg" alt=""></div></div></div>
-    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.65)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/20-outer.svg" alt=""></div></div></div>
+    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-outer.svg" alt=""></a></div></div></div>
 
-    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.28)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/monowheelers-inner.svg" alt=""></div></div></div>
-    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.65)" aria-hidden="true"><div class="unspin"><div class="upright"><img class="aspect-icon" src="/orbit-icons/monowheelers-outer.svg" alt=""></div></div></div>
+    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/40/running/" class="aspect-link" aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/running/" class="aspect-link" aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-outer.svg" alt=""></a></div></div></div>
 
     <div class="node" style="--a:0deg"><div class="unspin"><div class="upright">
       <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
