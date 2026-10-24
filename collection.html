@@ -47,8 +47,8 @@ html.still .orbit{--play:paused}
   height:var(--len);top:calc(50% - var(--len));
   transform-origin:0 var(--len);transform:rotate(var(--a))}
 .node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(var(--R)*-1))}
-.aspect-node{position:absolute;left:50%;top:50%;width:44px;height:44px;transform:rotate(var(--a)) translateY(var(--distance));pointer-events:auto}
-.aspect-node .unspin{position:relative;width:44px;height:44px;display:block}
+.aspect-node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(var(--distance));transform-origin:0 0;pointer-events:auto}
+.aspect-node .unspin{position:absolute;left:-22px;top:-22px;width:44px;height:44px;display:block}
 .aspect-node .upright{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
 .aspect-icon{display:block;width:clamp(18px,calc(var(--size)*.055),34px);height:clamp(18px,calc(var(--size)*.055),34px)}
 .aspect-link{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
