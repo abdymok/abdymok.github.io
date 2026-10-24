@@ -280,6 +280,10 @@ footer a { padding: 10px 0 10px 12px; }
   .bar { padding-top: 24px; }
 }
 
+@media(orientation:landscape) and (max-height:500px) {
+  .orbit { transform: translateY(-23%); }
+}
+
 @media(prefers-reduced-motion:reduce) {
   .ring, .unspin, .gyro ellipse { animation: none !important; }
   *, *::before, *::after { transition: none !important; }
