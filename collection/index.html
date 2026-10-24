@@ -40,6 +40,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center}
 @keyframes turn{to{transform:rotate(360deg)}}
 @keyframes unturn{to{transform:rotate(-360deg)}}
 .orbit:has(.item:hover),.orbit:has(.item:focus-visible),.orbit:has(.aspect-link:hover),.orbit:has(.aspect-link:focus-visible){--play:paused}
+@media (orientation:landscape) and (max-height:600px){main{justify-content:flex-start}.orbit{margin-top:-25vh;margin-bottom:0}}
 html.still .orbit{--play:paused}
 
 .spoke{position:absolute;left:50%;width:1px;background:var(--rule);
