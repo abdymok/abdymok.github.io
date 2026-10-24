@@ -28,9 +28,13 @@ h1{margin:0 0 8px;font:400 36px/1.1 var(--serif);letter-spacing:-.015em}.intro{p
 .project{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;padding:20px 0 22px;border-bottom:1px solid var(--rule)}
 .project-title{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0;font:400 22px/1.2 var(--serif)}
 .project-title .kind{font:12px/1.2 var(--sans);letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
-.art{display:block;position:relative;overflow:hidden;background:color-mix(in srgb,var(--fg) 4%,var(--bg));width:100%;aspect-ratio:16/9}
+.art{display:block;position:relative;overflow:hidden;background:color-mix(in srgb,var(--fg) 4%,var(--bg));width:100%;aspect-ratio:16/9;justify-self:center}
 .art img{display:block;width:100%;height:100%;object-fit:cover}
-.art.contain img{object-fit:contain}
+.art--balcony{width:min(100%,360px);aspect-ratio:4/5}
+.art--dnipro{border-radius:50% / 18%}
+.art--forty{width:min(100%,460px);aspect-ratio:1;border-radius:50%}
+.art--sixtyseven{width:min(100%,500px);aspect-ratio:1}
+.art--twenty{width:min(100%,400px);aspect-ratio:1;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
 .art:focus-visible{outline-offset:-4px}
 .art:hover img{transform:scale(1.008)}
 .art img{transition:transform .5s ease}
@@ -54,27 +58,27 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
 <main>
 <section class="intro"><h1>collection</h1><p class="caption note">Kyiv · Dnipro · monowheelers</p></section>
 <section class="project" aria-labelledby="balcony-title">
-<a class="art" href="/mural/balcony/" aria-label="Open balcony project"><img src="https://abdymok.github.io/mural/balcony/kyiv-balcony.jpg" alt="" loading="lazy"></a>
+<a class="art art--balcony" href="/mural/balcony/" aria-label="Open balcony project"><img src="https://abdymok.github.io/mural/balcony/kyiv-balcony.jpg" alt="" loading="lazy"></a>
 <h2 class="project-title" id="balcony-title"><a href="/mural/balcony/">balcony</a><span class="kind">view</span></h2>
 <p class="caption"></p>
 </section>
 <section class="project" aria-labelledby="dnipro-title">
-<a class="art" href="/40/dnipro/" aria-label="Open dnipro project"><img src="https://abdymok.github.io/40/dnipro/dnipro.jpg" alt="" loading="lazy"></a>
+<a class="art art--dnipro" href="/40/dnipro/" aria-label="Open dnipro project"><img src="https://abdymok.github.io/40/dnipro/dnipro.jpg" alt="" loading="lazy"></a>
 <h2 class="project-title" id="dnipro-title"><a href="/40/dnipro/">dnipro</a><span class="kind">place</span></h2>
 <p class="caption">Somewhere behind the mist is the city.</p>
 </section>
 <section class="project" aria-labelledby="forty-title">
-<a class="art" href="/40/" aria-label="Open mural 1–40"><img src="https://abdymok.github.io/40/images/40.jpg" alt="" loading="lazy"></a>
+<a class="art art--forty" href="/40/" aria-label="Open mural 1–40"><img src="https://abdymok.github.io/40/images/40.jpg" alt="" loading="lazy"></a>
 <h2 class="project-title" id="forty-title"><a href="/40/">40</a><span class="kind">mural</span></h2>
 <p class="caption">The forty-box archive.</p>
 </section>
 <section class="project" aria-labelledby="sixtyseven-title">
-<a class="art" href="/mural/" aria-label="Open the 67-image mural"><img src="https://abdymok.github.io/mural/67.jpg" alt="" loading="lazy"></a>
+<a class="art art--sixtyseven" href="/mural/" aria-label="Open the 67-image mural"><img src="https://abdymok.github.io/mural/67.jpg" alt="" loading="lazy"></a>
 <h2 class="project-title" id="sixtyseven-title"><a href="/mural/">67</a><span class="kind">mural</span></h2>
 <p class="caption">The living wall.</p>
 </section>
 <section class="project" aria-labelledby="twenty-title">
-<a class="art" href="/mural/20.jpg" aria-label="Open 20 graphic"><img src="https://abdymok.github.io/mural/20.jpg" alt="" loading="lazy"></a>
+<a class="art art--twenty" href="/mural/20.jpg" aria-label="Open 20 graphic"><img src="https://abdymok.github.io/mural/20.jpg" alt="" loading="lazy"></a>
 <h2 class="project-title" id="twenty-title"><a href="/mural/20.jpg">20</a><span class="kind">graphic</span></h2>
 <p class="caption"></p>
 </section>
