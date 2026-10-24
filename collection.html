@@ -403,28 +403,7 @@ gtag('config', 'G-S3ZLJ9QQWD');
   }
 })();
 
-(function(){
-  var title = document.getElementById('title');
-  var line = document.getElementById('line');
-  var baseTitle = title.textContent, baseLine = line.textContent;
-
-  document.querySelectorAll('.item').forEach(function(a){
-    function on(){
-      title.textContent = a.getAttribute('aria-label');
-      line.textContent = a.getAttribute('data-caption') || baseLine;
-    }
-    function off(){
-      title.textContent = baseTitle;
-      line.textContent = baseLine;
-    }
-    a.addEventListener('mouseenter', on);
-    a.addEventListener('focus', on);
-    a.addEventListener('mouseleave', off);
-    a.addEventListener('blur', off);
-  });
-
-
-})();
+/* Icon labels and captions stay hidden. The links retain accessible names. */
 </script>
 </body>
 </html>
