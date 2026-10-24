@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>collection · abdymok</title>
-<meta name="description" content="A small collection of murals, photographs, graphics and moving images from Kyiv.">
-<meta property="og:title" content="collection · abdymok">
-<meta property="og:description" content="A small collection of murals, photographs, graphics and moving images from Kyiv.">
+<title>abdymok</title>
+<meta name="description" content="Murals, photographs, graphics and moving images.">
+<meta property="og:title" content="abdymok">
+<meta property="og:description" content="Murals, photographs, graphics and moving images.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://abdymok.github.io/collection/">
 <meta property="og:image" content="https://abdymok.github.io/40/images/40.jpg">
@@ -22,34 +22,49 @@ html[data-theme="dark"]{color-scheme:dark}html[data-theme="dark"] body{--bg:#111
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.4 var(--sans);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
 a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:4px}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}.bar{padding:14px 0 26px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;min-height:100svh;display:flex;flex-direction:column;overflow-x:clip}.bar{padding:14px 0 6px}
+main{flex:1;display:flex;flex-direction:column;justify-content:center}
 .home{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:15px;letter-spacing:.04em}.y{color:var(--red)}
-h1{margin:0 0 8px;font:400 36px/1.1 var(--serif);letter-spacing:-.015em}.intro{padding:8px 0 22px;border-bottom:1px solid var(--rule);margin-bottom:8px}
-.project{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;padding:20px 0 22px;border-bottom:1px solid var(--rule)}
-.project-title{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0;font:400 22px/1.2 var(--serif)}
-.project-title .kind{font:12px/1.2 var(--sans);letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
-.art{display:block;position:relative;overflow:hidden;background:color-mix(in srgb,var(--fg) 4%,var(--bg));width:100%;aspect-ratio:16/9;justify-self:center}
-.art img{display:block;width:100%;height:100%;object-fit:cover}
-.art--balcony{width:min(100%,360px);aspect-ratio:4/5}
-.art--dnipro{}
-.art--forty{width:min(100%,460px);aspect-ratio:1;border-radius:50%}
-.art--sixtyseven{width:min(100%,500px);aspect-ratio:1}
-.art--twenty{width:min(100%,400px);aspect-ratio:1}
-.art:focus-visible{outline-offset:-4px}
-.project-title a{text-underline-offset:4px;text-decoration-thickness:1px}
-.art:hover~.project-title a,.project-title a:hover{text-decoration:underline}
-.art img{transition:opacity .2s ease}
-.art:hover img{opacity:.94}
-.number-art{display:flex;align-items:center;justify-content:center;font:400 clamp(76px,18vw,180px)/1 var(--serif);letter-spacing:-.06em}
-.number-art span{color:var(--fg)}
 .caption{font-size:14px;color:var(--muted);margin:0}
-.video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#000}
+
+/* the orbit */
+.orbit{
+  --size:clamp(300px,min(100vw - 40px,100svh - 250px),820px);
+  --thumb:clamp(58px,calc(var(--size)*.17),128px);
+  --R:calc(var(--size)/2 - var(--thumb)/2 - 14px);
+  --turn:240s;
+  position:relative;width:var(--size);height:var(--size);margin:6px auto 64px;
+}
+.track{position:absolute;left:calc(50% - var(--R));top:calc(50% - var(--R));width:calc(var(--R)*2);height:calc(var(--R)*2);border:1px solid var(--rule);border-radius:50%}
+.ring{position:absolute;inset:0;animation:turn var(--turn) linear infinite;animation-play-state:var(--play,running)}
+.unspin{animation:unturn var(--turn) linear infinite;animation-play-state:var(--play,running)}
+@keyframes turn{to{transform:rotate(360deg)}}
+@keyframes unturn{to{transform:rotate(-360deg)}}
+.orbit:has(.item:hover),.orbit:has(.item:focus-visible){--play:paused}
+html.still .orbit{--play:paused}
+
+.spoke{position:absolute;left:50%;width:1px;background:var(--rule);
+  --len:var(--R);
+  height:var(--len);top:calc(50% - var(--len));
+  transform-origin:0 var(--len);transform:rotate(var(--a))}
+.node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(var(--R)*-1))}
+.upright{transform:rotate(calc(var(--a)*-1))}
+.item{position:absolute;left:0;top:0;width:var(--thumb);transform:translate(-50%,-50%);display:block}
+.art{display:block;width:100%;aspect-ratio:1;overflow:hidden;background:color-mix(in srgb,var(--fg) 6%,var(--bg))}
+.art img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .2s ease}
+.item:hover .art img,.item:focus-visible .art img{opacity:.92}
+.label{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;line-height:1.15;background:var(--bg);padding:3px 6px}
+.title{display:block;font:400 clamp(15px,calc(var(--size)*.026),20px)/1.15 var(--serif)}
+.item:hover .title,.item:focus-visible .title{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
 footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;padding-bottom:22px;color:var(--muted);font-size:14px}
 footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;align-items:center}
-.theme-choice button{appearance:none;border:0;background:transparent;color:var(--muted);padding:10px 0;font:inherit;font-size:14px;cursor:pointer;text-underline-offset:4px;min-height:44px;min-width:44px;padding:12px 8px}
+.theme-choice button{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;text-underline-offset:4px;min-height:44px;min-width:44px;padding:12px 8px}
 .theme-choice button[aria-pressed="true"]{color:var(--fg);text-decoration:underline}
-@media(min-width:760px){.wrap{padding:0 32px}.bar{padding-top:24px;padding-bottom:42px}.intro{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:26px}.intro .note{margin:0}.project{grid-template-columns:minmax(0,7fr) minmax(180px,3fr);align-items:center;column-gap:28px;padding:24px 0}.project-title{grid-column:2;grid-row:1}.art,.video{grid-column:1;grid-row:1}.caption{grid-column:2;grid-row:2;align-self:start}.number-art{font-size:clamp(100px,13vw,180px)}footer{margin-top:46px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+.theme-choice .sep{width:1px;height:14px;background:var(--rule)}
+@media(min-width:760px){.wrap{padding:0 32px}.bar{padding-top:24px}footer{margin-top:20px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.theme-choice .sep,[data-motion]{display:none}}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3ZLJ9QQWD"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3ZLJ9QQWD');</script>
@@ -58,46 +73,56 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
 <div class="wrap">
 <header class="bar"><a class="home" href="/" aria-label="Back to ukraine@war landing page"><span>abd<span class="y">y</span>mok</span></a></header>
 <main>
-<section class="intro"><h1>collection</h1><p class="caption note">A small collection of murals, photographs, graphics and moving images from Kyiv.</p></section>
-<section class="project" aria-labelledby="balcony-title">
-<a class="art art--balcony" href="/mural/balcony/" aria-label="Open balcony project"><img src="/mural/balcony/kyiv-balcony.jpg" alt="" loading="lazy"></a>
-<h2 class="project-title" id="balcony-title"><a href="/mural/balcony/">balcony</a><span class="kind">photograph</span></h2>
-<p class="caption">A view from the city, not above it.</p>
-</section>
-<section class="project" aria-labelledby="dnipro-title">
-<a class="art art--dnipro" href="/40/dnipro/" aria-label="Open dnipro project"><img src="/40/dnipro/dnipro.jpg" alt="" loading="lazy"></a>
-<h2 class="project-title" id="dnipro-title"><a href="/40/dnipro/">dnipro</a><span class="kind">photograph</span></h2>
-<p class="caption">Somewhere behind the mist is the city.</p>
-</section>
-<section class="project" aria-labelledby="forty-title">
-<a class="art art--forty" href="/40/" aria-label="Open mural 1–40"><img src="/40/images/40.jpg" alt="" loading="lazy"></a>
-<h2 class="project-title" id="forty-title"><a href="/40/">40</a><span class="kind">archive</span></h2>
-<p class="caption">The forty-box archive.</p>
-</section>
-<section class="project" aria-labelledby="sixtyseven-title">
-<a class="art art--sixtyseven" href="/mural/" aria-label="Open the 67-image mural"><img src="/mural/67.jpg" alt="" loading="lazy"></a>
-<h2 class="project-title" id="sixtyseven-title"><a href="/mural/">67</a><span class="kind">mural</span></h2>
-<p class="caption">The living wall.</p>
-</section>
-<section class="project" aria-labelledby="twenty-title">
-<a class="art art--twenty" href="/collection/20/" aria-label="Open 20 graphic page"><img src="/mural/20.jpg" alt="" loading="lazy"></a>
-<h2 class="project-title" id="twenty-title"><a href="/collection/20/">20</a><span class="kind">graphic</span></h2>
-<p class="caption">A small number with a longer story.</p>
-</section>
-<section class="project" aria-labelledby="monowheelers-title">
-<div>
-<video class="video" controls playsinline preload="none" poster="/poster-m.webp">
-<source src="/unicyclers-compact.mp4" type="video/mp4">
-</video>
+<div class="orbit" id="orbit">
+  <div class="track" aria-hidden="true"></div>
+  <div class="ring">
+    <i class="spoke" style="--a:0deg" aria-hidden="true"></i>
+    <i class="spoke" style="--a:60deg" aria-hidden="true"></i>
+    <i class="spoke" style="--a:120deg" aria-hidden="true"></i>
+    <i class="spoke" style="--a:180deg" aria-hidden="true"></i>
+    <i class="spoke" style="--a:240deg" aria-hidden="true"></i>
+    <i class="spoke" style="--a:300deg" aria-hidden="true"></i>
+
+    <div class="node" style="--a:0deg"><div class="unspin"><div class="upright">
+      <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="art"><img src="/mural/balcony/kyiv-balcony.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
+    </div></div></div>
+
+    <div class="node" style="--a:60deg"><div class="unspin"><div class="upright">
+      <a class="item" href="/40/dnipro/" data-caption="Somewhere behind the mist is the city."><span class="art"><img src="/40/dnipro/dnipro.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">dnipro</span></span><span class="sr">Somewhere behind the mist is the city.</span></a>
+    </div></div></div>
+
+    <div class="node" style="--a:120deg"><div class="unspin"><div class="upright">
+      <a class="item" href="/40/" data-caption="The forty-box archive."><span class="art"><img src="/40/images/40.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">40</span></span><span class="sr">The forty-box archive.</span></a>
+    </div></div></div>
+
+    <div class="node" style="--a:180deg"><div class="unspin"><div class="upright">
+      <a class="item" href="/mural/" data-caption="The living wall."><span class="art"><img src="/mural/67.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">67</span></span><span class="sr">The living wall.</span></a>
+    </div></div></div>
+
+    <div class="node" style="--a:240deg"><div class="unspin"><div class="upright">
+      <a class="item" href="/collection/20/" data-caption="A small number with a longer story."><span class="art"><img src="/mural/20.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">20</span></span><span class="sr">A small number with a longer story.</span></a>
+    </div></div></div>
+
+    <div class="node" style="--a:300deg"><div class="unspin"><div class="upright">
+      <a class="item" href="/40/running/" data-caption="Kyiv · Dnipro"><span class="art"><img src="/poster-m.webp" alt="" loading="lazy"></span><span class="label"><span class="title">monowheelers</span></span><span class="sr">Kyiv · Dnipro</span></a>
+    </div></div></div>
+  </div>
+
 </div>
-<h2 class="project-title" id="monowheelers-title"><a href="/40/running/">monowheelers</a><span class="kind">film</span></h2>
-<p class="caption">Kyiv · Dnipro</p>
-</section>
 </main>
-<footer><span aria-hidden="true">Kyiv</span><div class="theme-choice" role="group" aria-label="Page background"><button type="button" data-theme-choice="dark" aria-pressed="false">black</button><button type="button" data-theme-choice="light" aria-pressed="false">white</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
+<footer><span aria-hidden="true">Kyiv</span><div class="theme-choice" role="group" aria-label="Page background and motion"><button type="button" data-theme-choice="dark" aria-pressed="false">black</button><button type="button" data-theme-choice="light" aria-pressed="false">white</button><span class="sep" aria-hidden="true"></span><button type="button" data-motion aria-pressed="false">still</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
 </div>
 <script>
 (function(){var root=document.documentElement,buttons=document.querySelectorAll('[data-theme-choice]'),metas=document.querySelectorAll('meta[name="theme-color"]'),media=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;function systemTheme(){return media&&media.matches?'dark':'light'}function applyTheme(theme,save){root.setAttribute('data-theme',theme);buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-choice')===theme))});var c=theme==='dark'?'#111110':'#ffffff';metas.forEach(function(m){m.removeAttribute('media');m.setAttribute('content',c)});if(save){try{localStorage.setItem('ukraine-at-war-theme',theme)}catch(e){}}}var saved=null;try{saved=localStorage.getItem('ukraine-at-war-theme')}catch(e){}if(saved==='dark'||saved==='light'){applyTheme(saved,false)}else{buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-choice')===systemTheme()))})}buttons.forEach(function(b){b.addEventListener('click',function(){applyTheme(b.getAttribute('data-theme-choice'),true)})});if(media&&media.addEventListener){media.addEventListener('change',function(){var s=null;try{s=localStorage.getItem('ukraine-at-war-theme')}catch(e){}if(s!=='dark'&&s!=='light'){buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-choice')===systemTheme()))});metas.forEach(function(m){m.setAttribute('content',systemTheme()==='dark'?'#111110':'#ffffff')})}})}})();
+
+/* still/turn switch */
+(function(){
+  var m=document.querySelector('[data-motion]');
+  m.addEventListener('click',function(){
+    var s=document.documentElement.classList.toggle('still');
+    m.setAttribute('aria-pressed',String(s));m.textContent=s?'turn':'still';
+  });
+})();
 </script>
 </body>
 </html>
