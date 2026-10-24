@@ -30,9 +30,8 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center}
 /* the orbit */
 .orbit{
   --size:clamp(300px,min(100vw - 40px,100svh - 250px),820px);
-  --thumb:clamp(58px,calc(var(--size)*.17),128px);
-  --R:calc(var(--size)/2 - var(--thumb)/2 - 14px);
-  --turn:240s;
+  --R:calc(var(--size)/2 - 76px);
+  --turn:60s;
   position:relative;width:var(--size);height:var(--size);margin:6px auto 64px;
 }
 .track{position:absolute;left:calc(50% - var(--R));top:calc(50% - var(--R));width:calc(var(--R)*2);height:calc(var(--R)*2);border:1px solid var(--rule);border-radius:50%}
@@ -49,12 +48,9 @@ html.still .orbit{--play:paused}
   transform-origin:0 var(--len);transform:rotate(var(--a))}
 .node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(var(--R)*-1))}
 .upright{transform:rotate(calc(var(--a)*-1))}
-.item{position:absolute;left:0;top:0;width:var(--thumb);transform:translate(-50%,-50%);display:block}
-.art{display:block;width:100%;aspect-ratio:1;overflow:hidden;background:color-mix(in srgb,var(--fg) 6%,var(--bg))}
-.art img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .2s ease}
-.item:hover .art img,.item:focus-visible .art img{opacity:.92}
-.label{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;line-height:1.15;background:var(--bg);padding:3px 6px}
-.title{display:block;font:400 clamp(15px,calc(var(--size)*.026),20px)/1.15 var(--serif)}
+.item{position:absolute;left:0;top:0;width:max-content;transform:translate(-50%,-50%);display:block}
+.label{display:block;text-align:center;white-space:nowrap;line-height:1.15;background:var(--bg);padding:4px 8px}
+.title{display:block;font:400 clamp(17px,calc(var(--size)*.03),24px)/1.15 var(--serif)}
 .item:hover .title,.item:focus-visible .title{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -84,27 +80,27 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
     <i class="spoke" style="--a:300deg" aria-hidden="true"></i>
 
     <div class="node" style="--a:0deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="art"><img src="/mural/balcony/kyiv-balcony.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
+      <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
     </div></div></div>
 
     <div class="node" style="--a:60deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/dnipro/" data-caption="Somewhere behind the mist is the city."><span class="art"><img src="/40/dnipro/dnipro.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">dnipro</span></span><span class="sr">Somewhere behind the mist is the city.</span></a>
+      <a class="item" href="/40/dnipro/" data-caption="Somewhere behind the mist is the city."><span class="label"><span class="title">dnipro</span></span><span class="sr">Somewhere behind the mist is the city.</span></a>
     </div></div></div>
 
     <div class="node" style="--a:120deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/" data-caption="The forty-box archive."><span class="art"><img src="/40/images/40.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">40</span></span><span class="sr">The forty-box archive.</span></a>
+      <a class="item" href="/40/" data-caption="The forty-box archive."><span class="label"><span class="title">40</span></span><span class="sr">The forty-box archive.</span></a>
     </div></div></div>
 
     <div class="node" style="--a:180deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/mural/" data-caption="The living wall."><span class="art"><img src="/mural/67.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">67</span></span><span class="sr">The living wall.</span></a>
+      <a class="item" href="/mural/" data-caption="The living wall."><span class="label"><span class="title">67</span></span><span class="sr">The living wall.</span></a>
     </div></div></div>
 
     <div class="node" style="--a:240deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/collection/20/" data-caption="A small number with a longer story."><span class="art"><img src="/mural/20.jpg" alt="" loading="lazy"></span><span class="label"><span class="title">20</span></span><span class="sr">A small number with a longer story.</span></a>
+      <a class="item" href="/collection/20/" data-caption="A small number with a longer story."><span class="label"><span class="title">20</span></span><span class="sr">A small number with a longer story.</span></a>
     </div></div></div>
 
     <div class="node" style="--a:300deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/running/" data-caption="Kyiv · Dnipro"><span class="art"><img src="/poster-m.webp" alt="" loading="lazy"></span><span class="label"><span class="title">monowheelers</span></span><span class="sr">Kyiv · Dnipro</span></a>
+      <a class="item" href="/40/running/" data-caption="Kyiv · Dnipro"><span class="label"><span class="title">monowheelers</span></span><span class="sr">Kyiv · Dnipro</span></a>
     </div></div></div>
   </div>
 
