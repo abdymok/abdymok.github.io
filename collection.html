@@ -30,7 +30,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center}
 /* the orbit */
 .orbit{
   --size:clamp(300px,min(100vw - 40px,100svh - 250px),820px);
-  --R:calc(var(--size)/2 - 76px);
+  --R:calc(var(--size)/2 - 48px);
   --turn:60s;
   position:relative;width:var(--size);height:var(--size);margin:6px auto 64px;
 }
@@ -39,7 +39,7 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center}
 .unspin{animation:unturn var(--turn) linear infinite;animation-play-state:var(--play,running)}
 @keyframes turn{to{transform:rotate(360deg)}}
 @keyframes unturn{to{transform:rotate(-360deg)}}
-.orbit:has(.item:hover),.orbit:has(.item:focus-visible){--play:paused}
+.orbit:has(.item:hover),.orbit:has(.item:focus-visible),.orbit:has(.aspect-link:hover),.orbit:has(.aspect-link:focus-visible){--play:paused}
 html.still .orbit{--play:paused}
 
 .spoke{position:absolute;left:50%;width:1px;background:var(--rule);
@@ -90,22 +90,22 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
 
 
     <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/mural/balcony/" class="aspect-link" aria-label="balcony"><img class="aspect-icon" src="/orbit-icons/balcony-inner.svg" alt=""></a></div></div></div>
-    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/mural/balcony/" class="aspect-link" aria-label="balcony"><img class="aspect-icon" src="/orbit-icons/balcony-outer.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.92)"><div class="unspin"><div class="upright"><a href="/mural/balcony/" class="aspect-link" aria-label="balcony"><img class="aspect-icon" src="/orbit-icons/balcony-outer.svg" alt=""></a></div></div></div>
 
     <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/40/dnipro/" class="aspect-link" aria-label="dnipro"><img class="aspect-icon" src="/orbit-icons/dnipro-inner.svg" alt=""></a></div></div></div>
-    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/dnipro/" class="aspect-link" aria-label="dnipro"><img class="aspect-icon" src="/orbit-icons/dnipro-outer.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.92)"><div class="unspin"><div class="upright"><a href="/40/dnipro/" class="aspect-link" aria-label="dnipro"><img class="aspect-icon" src="/orbit-icons/dnipro-outer.svg" alt=""></a></div></div></div>
 
     <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/40/" class="aspect-link" aria-label="40"><img class="aspect-icon" src="/orbit-icons/40-inner.svg" alt=""></a></div></div></div>
-    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/" class="aspect-link" aria-label="40"><img class="aspect-icon" src="/orbit-icons/40-outer.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.92)"><div class="unspin"><div class="upright"><a href="/40/" class="aspect-link" aria-label="40"><img class="aspect-icon" src="/orbit-icons/40-outer.svg" alt=""></a></div></div></div>
 
     <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/mural/" class="aspect-link" aria-label="67"><img class="aspect-icon" src="/orbit-icons/67-inner.svg" alt=""></a></div></div></div>
-    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/mural/" class="aspect-link" aria-label="67"><img class="aspect-icon" src="/orbit-icons/67-outer.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.92)"><div class="unspin"><div class="upright"><a href="/mural/" class="aspect-link" aria-label="67"><img class="aspect-icon" src="/orbit-icons/67-outer.svg" alt=""></a></div></div></div>
 
     <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-inner.svg" alt=""></a></div></div></div>
-    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-outer.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.92)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-outer.svg" alt=""></a></div></div></div>
 
     <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.48)"><div class="unspin"><div class="upright"><a href="/40/running/" class="aspect-link" aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-inner.svg" alt=""></a></div></div></div>
-    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/running/" class="aspect-link" aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-outer.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.92)"><div class="unspin"><div class="upright"><a href="/40/running/" class="aspect-link" aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-outer.svg" alt=""></a></div></div></div>
 
     <div class="node" style="--a:0deg"><div class="unspin"><div class="upright">
       <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
