@@ -11,8 +11,8 @@
 <meta property="og:url" content="https://abdymok.github.io/collection.html">
 <meta property="og:image" content="https://abdymok.github.io/40/images/40.jpg">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#2459c4">
+<meta name="theme-color" content="#2459c4">
 <link rel="icon" href="/mural-180.png">
 <style>
 :root{--bg:#2459c4;--fg:#fff;--muted:#e0e8ff;--disc:#1a3f8f;--ring:#f3d83b}
@@ -54,7 +54,6 @@ html.still .orbit{--play:paused}
 .aspect-icon{display:block;width:clamp(18px,calc(var(--size)*.055),34px);height:clamp(18px,calc(var(--size)*.055),34px)}
 .aspect-link{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .aspect-link:focus-visible{outline:2px solid currentColor;outline-offset:2px}
-@media(prefers-color-scheme:dark){.aspect-icon{filter:invert(1)}}
 html[data-theme="light"] .aspect-icon{filter:none}
 html[data-theme="dark"] .aspect-icon{filter:invert(1)}
 
@@ -72,7 +71,7 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
 @media(min-width:760px){.wrap{padding:0 32px}.bar{padding-top:24px}footer{margin-top:20px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.theme-choice .sep,[data-motion]{display:none}}
 </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3ZLJ9QQWD"></script>
+
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3ZLJ9QQWD');</script>
 </head>
 <body>
@@ -83,6 +82,7 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
   <div class="track" aria-hidden="true"></div>
   <div class="ring">
     <i class="spoke" style="--a:0deg" aria-hidden="true"></i>
+<div class="readout" aria-hidden="true"></div>
     <i class="spoke" style="--a:60deg" aria-hidden="true"></i>
     <i class="spoke" style="--a:120deg" aria-hidden="true"></i>
     <i class="spoke" style="--a:180deg" aria-hidden="true"></i>
@@ -129,7 +129,7 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
 
 </div>
 </main>
-<footer><span aria-hidden="true">Kyiv</span><div class="theme-choice" role="group" aria-label="Page background and motion"><button type="button" data-theme-choice="dark" aria-pressed="false">black</button><button type="button" data-theme-choice="light" aria-pressed="false">white</button><span class="sep" aria-hidden="true"></span><button type="button" data-motion aria-pressed="false">still</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
+<footer><span aria-hidden="true">Kyiv</span><div class="theme-choice" role="group" aria-label="Page background and motion"><button type="button" data-motion aria-pressed="false">still</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
 </div>
 <script>
 (function(){var root=document.documentElement,buttons=document.querySelectorAll('[data-theme-choice]'),metas=document.querySelectorAll('meta[name="theme-color"]'),media=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;function systemTheme(){return media&&media.matches?'dark':'light'}function applyTheme(theme,save){root.setAttribute('data-theme',theme);buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-choice')===theme))});var c=theme==='dark'?'#111110':'#ffffff';metas.forEach(function(m){m.removeAttribute('media');m.setAttribute('content',c)});if(save){try{localStorage.setItem('ukraine-at-war-theme',theme)}catch(e){}}}var saved=null;try{saved=localStorage.getItem('ukraine-at-war-theme')}catch(e){}if(saved==='dark'||saved==='light'){applyTheme(saved,false)}else{buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-choice')===systemTheme()))})}buttons.forEach(function(b){b.addEventListener('click',function(){applyTheme(b.getAttribute('data-theme-choice'),true)})});if(media&&media.addEventListener){media.addEventListener('change',function(){var s=null;try{s=localStorage.getItem('ukraine-at-war-theme')}catch(e){}if(s!=='dark'&&s!=='light'){buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-choice')===systemTheme()))});metas.forEach(function(m){m.setAttribute('content',systemTheme()==='dark'?'#111110':'#ffffff')})}})}})();
@@ -140,6 +140,21 @@ footer a{padding:10px 0 10px 12px}.theme-choice{display:inline-flex;gap:10px;ali
   m.addEventListener('click',function(){
     var s=document.documentElement.classList.toggle('still');
     m.setAttribute('aria-pressed',String(s));m.textContent=s?'turn':'still';
+  });
+})();
+(function(){
+  var r=document.querySelector('.readout');
+  function show(e){
+    var a=e.currentTarget;
+    r.textContent=a.getAttribute('aria-label');
+    var s=document.createElement('small');
+    s.textContent=a.dataset.caption;
+    r.appendChild(s);
+  }
+  function clear(){r.textContent=''}
+  document.querySelectorAll('.aspect-link').forEach(function(a){
+    a.addEventListener('mouseenter',show);a.addEventListener('focus',show);
+    a.addEventListener('mouseleave',clear);a.addEventListener('blur',clear);
   });
 })();
 </script>
