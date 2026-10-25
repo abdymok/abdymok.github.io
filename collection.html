@@ -262,6 +262,10 @@ footer a { padding: 10px 0 10px 12px; }
   .bar { padding-top: 24px; }
 }
 
+@media(orientation:portrait) and (max-width:430px) {
+  .orbit { --size: calc(clamp(300px, min(100vw - 40px, 100svh - 240px), 860px) * .95); }
+}
+
 @media(orientation:landscape) and (max-height:500px) {
   .orbit {
     --size: clamp(190px, min(100vw - 40px, 100svh - 180px), 420px);
