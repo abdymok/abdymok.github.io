@@ -65,6 +65,12 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
 .motion-choice button[aria-pressed="true"]{color:var(--fg);text-decoration:underline}
 @media(min-width:760px){.wrap{padding:0 32px}.bar{padding-top:24px}footer{margin-top:20px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}[data-motion]{display:none}}
+
+/* monowheelers reel: a full-screen layer on this page, so the tap that opens it is the tap that starts it */
+.reel{position:fixed;inset:0;z-index:50;background:#000;opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s;outline:0}
+.reel.on{opacity:1;visibility:visible;transition:opacity .25s}
+.reel video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
+.reel video::-webkit-media-controls,.reel video::-webkit-media-controls-panel,.reel video::-webkit-media-controls-overlay-play-button,.reel video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none;opacity:0}
 </style>
 
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3ZLJ9QQWD');</script>
@@ -95,7 +101,7 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
 
     <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-inner.svg" alt=""></a></div></div></div>
 
-    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/running.html" class="aspect-link" aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-inner.svg" alt=""></a></div></div></div>
+    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/running.html" class="aspect-link" data-reel aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-inner.svg" alt=""></a></div></div></div>
 
     <div class="node" style="--a:0deg"><div class="unspin"><div class="upright">
       <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
@@ -118,13 +124,16 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
     </div></div></div>
 
     <div class="node" style="--a:300deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/running/running.mp4" data-caption="Kyiv · Dnipro"><span class="label"><span class="title">monowheelers</span></span><span class="sr">Kyiv · Dnipro</span></a>
+      <a class="item" href="/40/running.html" data-reel data-caption="Kyiv · Dnipro"><span class="label"><span class="title">monowheelers</span></span><span class="sr">Kyiv · Dnipro</span></a>
     </div></div></div>
   </div>
 
 </div>
 </main>
 <footer><span aria-hidden="true">Kyiv</span><div class="motion-choice"><button type="button" data-motion aria-pressed="false">still</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
+</div>
+<div class="reel" id="reel" role="dialog" aria-modal="true" aria-label="monowheelers" aria-hidden="true" tabindex="-1">
+<video muted loop playsinline webkit-playsinline preload="metadata" poster="/40/evidence/monowheelers.png" src="/40/running/running.mp4" disableremoteplayback x-webkit-airplay="deny"></video>
 </div>
 <script>
 /* still/turn switch */
@@ -149,6 +158,49 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
     a.addEventListener('mouseenter',show);a.addEventListener('focus',show);
     a.addEventListener('mouseleave',clear);a.addEventListener('blur',clear);
   });
+})();
+
+/* monowheelers: start the video inside the tap that opens it */
+(function(){
+  var reel=document.getElementById('reel'),v=reel.querySelector('video');
+  var mq=window.matchMedia('(orientation: portrait)'),isOpen=false;
+  v.muted=true;v.defaultMuted=true;v.playsInline=true;v.controls=false;
+  function startTime(){return mq.matches&&isFinite(v.duration)?v.duration*.8:0}
+  function frame(){            /* portrait: last fifth, looped by hand; landscape: whole film, native loop */
+    v.loop=!mq.matches;
+    if(isFinite(v.duration)&&v.duration)v.currentTime=startTime();
+  }
+  function noop(){}
+  function openReel(){
+    v.muted=true;
+    frame();                   /* no-op if metadata is not in yet; the listener below finishes the job */
+    var p=v.play();            /* must happen synchronously in the click: this is what iOS counts as the gesture */
+    if(p&&p.catch)p.catch(noop);
+    isOpen=true;
+    reel.classList.add('on');reel.setAttribute('aria-hidden','false');
+    try{reel.focus({preventScroll:true})}catch(e){}
+    history.pushState({reel:1},'','#monowheelers');
+  }
+  function closeReel(){
+    isOpen=false;v.pause();
+    reel.classList.remove('on');reel.setAttribute('aria-hidden','true');
+  }
+  v.addEventListener('loadedmetadata',function(){if(isOpen)frame()});
+  v.addEventListener('ended',function(){
+    if(isOpen&&mq.matches){v.currentTime=startTime();var p=v.play();if(p&&p.catch)p.catch(noop)}
+  });
+  if(mq.addEventListener)mq.addEventListener('change',function(){if(isOpen)frame()});
+  document.querySelectorAll('[data-reel]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      e.preventDefault();openReel();
+    });
+  });
+  window.addEventListener('popstate',function(){if(isOpen)closeReel()});
+  reel.addEventListener('click',function(){
+    if(history.state&&history.state.reel)history.back();else closeReel();
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen)reel.click()});
 })();
 </script>
 </body>
