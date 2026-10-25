@@ -3,196 +3,448 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>abdymok</title>
-<meta name="description" content="Murals, photographs, graphics and moving images.">
-<meta property="og:title" content="abdymok">
-<meta property="og:description" content="Murals, photographs, graphics and moving images.">
+<title>collection · abdymok</title>
+<meta name="description" content="A small collection of murals, photographs, graphics and moving images from Kyiv.">
+<meta property="og:title" content="collection · abdymok">
+<meta property="og:description" content="A small collection of murals, photographs, graphics and moving images from Kyiv.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://abdymok.github.io/collection/">
 <meta property="og:image" content="https://abdymok.github.io/40/images/40.jpg">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#2459c4">
-<meta name="theme-color" content="#2459c4">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="/mural-180.png">
 <style>
-:root{--bg:#2459c4;--fg:#fff;--muted:#e0e8ff;--disc:#1a3f8f;--ring:#f3d83b}
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.4 var(--sans);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
-a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:4px}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px;min-height:100svh;display:flex;flex-direction:column;overflow-x:clip}.bar{padding:14px 0 6px}
-main{flex:1;display:flex;flex-direction:column;justify-content:center}
-.home{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:15px;letter-spacing:.04em}.y{color:var(--ring)}
-.caption{font-size:14px;color:var(--muted);margin:0}
-.readout{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;font:400 clamp(17px,calc(var(--size)*.04),28px)/1.2 var(--serif)}
-.readout small{display:block;margin-top:.4em;font:14px/1.3 var(--sans);color:var(--muted)}
-
-/* the orbit */
-.orbit{
-  --size:clamp(300px,min(100vw - 40px,100svh - 250px),820px);
-  --R:calc(var(--size)/2 - 48px);
-  --turn:60s;
-  position:relative;width:var(--size);height:var(--size);margin:6px auto 64px;
+:root {
+  --bg: #ffffff;
+  --fg: #111110;
+  --yellow: #f4d35e;
+  --red: #d00;
+  --muted: #5e5d58;
+  --rule: rgba(17,17,16,.2);
+  --serif: Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
-.track{border:1px solid var(--ring);background:var(--disc)}
-.ring{position:absolute;inset:0;animation:turn var(--turn) linear infinite;animation-play-state:var(--play,running)}
-.unspin{animation:unturn var(--turn) linear infinite;animation-play-state:var(--play,running)}
-@keyframes turn{to{transform:rotate(360deg)}}
-@keyframes unturn{to{transform:rotate(-360deg)}}
-.orbit:has(.item:hover),.orbit:has(.item:focus-visible),.orbit:has(.aspect-link:hover),.orbit:has(.aspect-link:focus-visible){--play:paused}
-@media (orientation:landscape) and (max-height:600px){main{justify-content:flex-start}.orbit{margin-top:-25vh;margin-bottom:0}}
-html.still .orbit{--play:paused}
 
-.spoke{display:none;position:absolute;left:50%;width:1px;background:var(--rule);
-  --len:var(--R);
-  height:var(--len);top:calc(50% - var(--len));
-  transform-origin:0 var(--len);transform:rotate(var(--a))}
-.node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(calc(var(--R)*-1))}
-.aspect-node{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a)) translateY(var(--distance));transform-origin:0 0;pointer-events:auto}
-.aspect-node .unspin{position:absolute;left:-22px;top:-22px;width:44px;height:44px;display:block}
-.aspect-node .upright{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
-.aspect-icon{display:block;width:clamp(18px,calc(var(--size)*.055),34px);height:clamp(18px,calc(var(--size)*.055),34px)}
-.aspect-link{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.aspect-link:focus-visible{outline:2px solid currentColor;outline-offset:2px}
-.upright{transform:rotate(calc(var(--a)*-1))}
-.item{position:absolute;left:0;top:0;width:44px;height:44px;transform:translate(-50%,-50%);display:block;border-radius:50%}
-.label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.title{display:block;font:400 clamp(17px,calc(var(--size)*.03),24px)/1.15 var(--serif)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+* { box-sizing: border-box; }
 
-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;padding-bottom:22px;color:var(--muted);font-size:14px}
-footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items:center}
-.motion-choice button{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;text-underline-offset:4px;min-height:44px;min-width:44px;padding:12px 8px}
-.motion-choice button[aria-pressed="true"]{color:var(--fg);text-decoration:underline}
-@media(min-width:760px){.wrap{padding:0 32px}.bar{padding-top:24px}footer{margin-top:20px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}[data-motion]{display:none}}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--bg);
+  color-scheme: light;
+}
 
-/* monowheelers reel: a full-screen layer on this page, so the tap that opens it is the tap that starts it */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 17px/1.4 var(--sans);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+.bar { padding: 14px 0 6px; transform: translateY(3vh); }
+main { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.home {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+  letter-spacing: .04em;
+}
+
+.y { color: var(--red); }
+
+/* Orbit */
+
+.orbit {
+  --size: clamp(300px, min(100vw - 40px, 100svh - 240px), 860px);
+  --icon: 48px;
+  --R: calc(var(--size) * .36);
+  --hub: calc(var(--size) * .17);
+  --turn: 240s;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  margin: 30px auto 40px;
+}
+
+/* static dial: scale of 60 ticks, one yellow index at twelve */
+.dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.track {
+  position: absolute;
+  left: calc(50% - var(--R));
+  top: calc(50% - var(--R));
+  width: calc(var(--R) * 2);
+  height: calc(var(--R) * 2);
+  border: 1px solid var(--fg);
+  border-radius: 50%;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  animation: turn var(--turn) linear infinite;
+  animation-play-state: var(--play, running);
+}
+
+.unspin {
+  animation: unturn var(--turn) linear infinite;
+  animation-play-state: var(--play, running);
+}
+
+@keyframes turn { to { transform: rotate(360deg); } }
+@keyframes unturn { to { transform: rotate(-360deg); } }
+
+.orbit:has(.item:hover),
+.orbit:has(.item:focus-visible) { --play: paused; }
+
+.spoke {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  background: var(--rule);
+  --len: calc(var(--R) - var(--hub));
+  height: var(--len);
+  top: calc(50% - var(--hub) - var(--len));
+  transform-origin: 0 calc(var(--hub) + var(--len));
+  transform: rotate(var(--a));
+}
+
+.node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--a)) translateY(calc(var(--R) * -1));
+}
+
+.upright { transform: rotate(calc(var(--a) * -1)); }
+
+.item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--icon);
+  height: var(--icon);
+  transform: translate(-50%,-50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--fg);
+  z-index: 2;
+  transition: background-color .15s ease;
+}
+
+.item:hover,
+.item:focus-visible { background: var(--yellow); }
+
+.art {
+  display: grid;
+  place-items: center;
+  width: 62%;
+  height: 62%;
+}
+
+.art img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: calc(var(--hub) * 2);
+  text-align: center;
+  pointer-events: none;
+}
+
+.title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font: 400 clamp(20px, calc(var(--size) * .06), 50px)/1.05 var(--serif);
+  letter-spacing: -.02em;
+}
+
+/* gyroscope: two rings turning on perpendicular axes, never in step */
+.gyro {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: calc(var(--size) * .27);
+  height: calc(var(--size) * .27);
+  transform: translate(-50%,-50%);
+  overflow: visible;
+  transition: opacity .15s ease;
+}
+
+.gyro ellipse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-play-state: var(--play, running);
+}
+
+.r1 { transform: scaleX(.5); animation-name: flipx; animation-duration: 11s; }
+.r2 { transform: scaleY(.5); animation-name: flipy; animation-duration: 17s; animation-delay: -6s; }
+
+@keyframes flipx { from { transform: scaleX(1); } to { transform: scaleX(-1); } }
+@keyframes flipy { from { transform: scaleY(1); } to { transform: scaleY(-1); } }
+
+.orbit:has(.item:hover) .gyro,
+.orbit:has(.item:focus-visible) .gyro { opacity: 0; }
+
+.line {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: calc(var(--size) * .045);
+  margin: 0;
+  text-wrap: balance;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding-bottom: 22px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+footer a { padding: 10px 0 10px 12px; }
+
+@media(min-width:760px) {
+  .wrap { padding: 0 32px; }
+  .bar { padding-top: 24px; }
+}
+
+@media(orientation:portrait) and (max-width:430px) {
+  .orbit { --size: calc(clamp(300px, min(100vw - 40px, 100svh - 240px), 860px) * .95); }
+}
+
+@media(orientation:landscape) and (max-height:500px) {
+  .orbit {
+    --size: clamp(190px, min(100vw - 40px, 100svh - 180px), 420px);
+    --icon: clamp(34px, calc(var(--size) * .16), 42px);
+    margin: 0 auto;
+    transform: translateY(-8%);
+  }
+  .line { top: calc(var(--size) * .015); }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .ring, .unspin, .gyro ellipse { animation: none !important; }
+  *, *::before, *::after { transition: none !important; }
+  .motion { display: none; }
+}
+
+/* Full-screen monowheelers reel */
 .reel{position:fixed;inset:0;z-index:50;background:#000;opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s;outline:0}
 .reel.on{opacity:1;visibility:visible;transition:opacity .25s}
 .reel video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
 .reel video::-webkit-media-controls,.reel video::-webkit-media-controls-panel,.reel video::-webkit-media-controls-overlay-play-button,.reel video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none;opacity:0}
 </style>
-
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3ZLJ9QQWD');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3ZLJ9QQWD"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-S3ZLJ9QQWD');
+</script>
 </head>
 <body>
 <div class="wrap">
-<header class="bar"><a class="home" href="/" aria-label="Back to ukraine@war landing page"><span>abd<span class="y">y</span>mok</span></a></header>
+<header class="bar">
+  <a class="home" href="/" aria-label="abdymok, home"><span aria-hidden="true">abd<span class="y">y</span>mok</span></a>
+</header>
+
 <main>
 <div class="orbit" id="orbit">
+  <svg class="dial" id="dial" viewBox="0 0 100 100" aria-hidden="true" focusable="false"></svg>
   <div class="track" aria-hidden="true"></div>
   <div class="ring">
     <i class="spoke" style="--a:0deg" aria-hidden="true"></i>
-<div class="readout" aria-hidden="true"></div>
     <i class="spoke" style="--a:60deg" aria-hidden="true"></i>
     <i class="spoke" style="--a:120deg" aria-hidden="true"></i>
     <i class="spoke" style="--a:180deg" aria-hidden="true"></i>
     <i class="spoke" style="--a:240deg" aria-hidden="true"></i>
     <i class="spoke" style="--a:300deg" aria-hidden="true"></i>
 
-
-    <div class="aspect-node" style="--a:0deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/mural/balcony/" class="aspect-link" aria-label="balcony"><img class="aspect-icon" src="/orbit-icons/balcony-inner.svg" alt=""></a></div></div></div>
-
-    <div class="aspect-node" style="--a:60deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/dnipro/" class="aspect-link" aria-label="dnipro"><img class="aspect-icon" src="/orbit-icons/dnipro-inner.svg" alt=""></a></div></div></div>
-
-    <div class="aspect-node" style="--a:120deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/" class="aspect-link" aria-label="40"><img class="aspect-icon" src="/orbit-icons/40-inner.svg" alt=""></a></div></div></div>
-
-    <div class="aspect-node" style="--a:180deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/mural/" class="aspect-link" aria-label="67"><img class="aspect-icon" src="/orbit-icons/67-inner.svg" alt=""></a></div></div></div>
-
-    <div class="aspect-node" style="--a:240deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/collection/20/" class="aspect-link" aria-label="20"><img class="aspect-icon" src="/orbit-icons/20-inner.svg" alt=""></a></div></div></div>
-
-    <div class="aspect-node" style="--a:300deg;--distance:calc(var(--R)*-.78)"><div class="unspin"><div class="upright"><a href="/40/running.html" class="aspect-link" data-reel aria-label="monowheelers"><img class="aspect-icon" src="/orbit-icons/monowheelers-inner.svg" alt=""></a></div></div></div>
-
     <div class="node" style="--a:0deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/mural/balcony/" data-caption="A view from the city, not above it."><span class="label"><span class="title">balcony</span></span><span class="sr">A view from the city, not above it.</span></a>
+      <a class="item" href="/mural/balcony/" data-caption="a view from the city, not above it." aria-label="balcony">
+        <span class="art"><img src="/orbit-icons/balcony-inner.svg" alt=""></span>
+        <span class="sr">a view from the city, not above it.</span>
+      </a>
     </div></div></div>
 
     <div class="node" style="--a:60deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/dnipro/" data-caption="Somewhere behind the mist is the city."><span class="label"><span class="title">dnipro</span></span><span class="sr">Somewhere behind the mist is the city.</span></a>
+      <a class="item" href="/40/dnipro/" data-caption="somewhere behind the mist is the city." aria-label="dnipro">
+        <span class="art"><img src="/orbit-icons/dnipro-inner.svg" alt=""></span>
+        <span class="sr">somewhere behind the mist is the city.</span>
+      </a>
     </div></div></div>
 
     <div class="node" style="--a:120deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/" data-caption="The forty-box archive."><span class="label"><span class="title">40</span></span><span class="sr">The forty-box archive.</span></a>
+      <a class="item" href="/40/" data-caption="the forty-box archive." aria-label="40">
+        <span class="art"><img src="/orbit-icons/40-inner.svg" alt=""></span>
+        <span class="sr">the forty-box archive.</span>
+      </a>
     </div></div></div>
 
     <div class="node" style="--a:180deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/mural/" data-caption="The living wall."><span class="label"><span class="title">67</span></span><span class="sr">The living wall.</span></a>
+      <a class="item" href="/mural/" data-caption="the living wall." aria-label="67">
+        <span class="art"><img src="/orbit-icons/67-inner.svg" alt=""></span>
+        <span class="sr">the living wall.</span>
+      </a>
     </div></div></div>
 
     <div class="node" style="--a:240deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/collection/20/" data-caption="A small number with a longer story."><span class="label"><span class="title">20</span></span><span class="sr">A small number with a longer story.</span></a>
+      <a class="item" href="https://abdymok.github.io/21_squares/index.html" data-caption="a small number with a longer story." aria-label="20">
+        <span class="art"><img src="/orbit-icons/20-inner.svg" alt=""></span>
+        <span class="sr">a small number with a longer story.</span>
+      </a>
     </div></div></div>
 
     <div class="node" style="--a:300deg"><div class="unspin"><div class="upright">
-      <a class="item" href="/40/running.html" data-reel data-caption="Kyiv · Dnipro"><span class="label"><span class="title">monowheelers</span></span><span class="sr">Kyiv · Dnipro</span></a>
+      <a class="item" href="/40/running.html" data-reel data-caption="kyiv · dnipro" aria-label="monowheelers">
+        <span class="art"><img src="/orbit-icons/monowheelers-inner.svg" alt=""></span>
+        <span class="sr">kyiv · dnipro</span>
+      </a>
     </div></div></div>
   </div>
 
+  <div class="hub" aria-hidden="false">
+    <h1 class="sr">abdymok</h1>
+    <svg class="gyro" viewBox="-10 -10 20 20" aria-hidden="true" focusable="false">
+      <g transform="rotate(-23)">
+        <line x1="0" y1="-9.8" x2="0" y2="9.8" stroke="#111110" stroke-width=".12"/>
+        <ellipse class="r1" rx="9" ry="9" fill="none" stroke="#111110" stroke-width=".18"/>
+        <ellipse class="r2" rx="9" ry="9" fill="none" stroke="#111110" stroke-width=".18"/>
+        <circle r="1.1" fill="#f4d35e" stroke="#111110" stroke-width=".18"/>
+      </g>
+    </svg>
+    <div class="title" id="title" aria-hidden="true"></div>
+    <p class="line" id="line"></p>
+  </div>
 </div>
 </main>
-<footer><span aria-hidden="true">Kyiv</span><div class="motion-choice"><button type="button" data-motion aria-pressed="false">still</button></div><a href="https://abdymok.substack.com">Substack</a></footer>
+
+<footer>
+  <span aria-hidden="true">kyiv</span>
+  <a href="https://abdymok.substack.com">substack</a>
+</footer>
 </div>
+
 <div class="reel" id="reel" role="dialog" aria-modal="true" aria-label="monowheelers" aria-hidden="true" tabindex="-1">
-<video muted loop playsinline webkit-playsinline preload="metadata" poster="/40/evidence/monowheelers.png" src="/40/running/running.mp4" disableremoteplayback x-webkit-airplay="deny"></video>
+  <video muted loop playsinline webkit-playsinline preload="metadata" poster="/40/evidence/monowheelers.png" src="/40/running/running.mp4" disableremoteplayback x-webkit-airplay="deny"></video>
 </div>
+
 <script>
-/* still/turn switch */
+/* dial: 60 ticks, long every fifth, yellow index at twelve */
 (function(){
-  var m=document.querySelector('[data-motion]');
-  m.addEventListener('click',function(){
-    var s=document.documentElement.classList.toggle('still');
-    m.setAttribute('aria-pressed',String(s));m.textContent=s?'turn':'still';
-  });
-})();
-(function(){
-  var r=document.querySelector('.readout');
-  function show(e){
-    var a=e.currentTarget;
-    r.textContent=a.getAttribute('aria-label');
-    var s=document.createElement('small');
-    s.textContent=a.dataset.caption;
-    r.appendChild(s);
+  var svg = document.getElementById('dial'), NS = 'http://www.w3.org/2000/svg';
+  function el(n, a){ var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); return e; }
+  svg.appendChild(el('circle', {cx: 50, cy: 50, r: 49.6, fill: 'none', stroke: '#111110', 'stroke-width': .25}));
+  for (var i = 0; i < 60; i++) {
+    var t = i * Math.PI / 30, long = i % 5 === 0, r1 = 49.6, r2 = long ? 45.8 : 47.6;
+    var s = Math.sin(t), c = Math.cos(t);
+    svg.appendChild(el('line', {
+      x1: 50 + r1 * s, y1: 50 - r1 * c, x2: 50 + r2 * s, y2: 50 - r2 * c,
+      stroke: '#111110', 'stroke-width': long ? .4 : .2
+    }));
   }
-  function clear(){r.textContent=''}
-  document.querySelectorAll('.aspect-link').forEach(function(a){
-    a.addEventListener('mouseenter',show);a.addEventListener('focus',show);
-    a.addEventListener('mouseleave',clear);a.addEventListener('blur',clear);
+  svg.appendChild(el('line', {x1: 50, y1: .4, x2: 50, y2: 5.6, stroke: '#f4d35e', 'stroke-width': 1}));
+
+  /* north */
+  var n = el('text', {
+    x: 50, y: -2.2, 'text-anchor': 'middle', fill: '#111110',
+    'font-size': 3.6, 'font-family': 'Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif'
   });
+  n.textContent = 'n';
+  svg.appendChild(n);
+
+  /* reticle: four short ticks at the hub edge */
+  for (var j = 0; j < 4; j++) {
+    var u = j * Math.PI / 2, su = Math.sin(u), cu = Math.cos(u);
+    svg.appendChild(el('line', {
+      x1: 50 + 15 * su, y1: 50 - 15 * cu, x2: 50 + 19 * su, y2: 50 - 19 * cu,
+      stroke: '#111110', 'stroke-width': .25
+    }));
+  }
 })();
 
-/* monowheelers: start the video inside the tap that opens it */
+/* Icon labels and captions stay hidden. The links retain accessible names. */
+</script>
+
+<script>
+/* Reel interaction: preserve the ordinary link as a fallback if JavaScript is unavailable. */
 (function(){
   var reel=document.getElementById('reel'),v=reel.querySelector('video');
   var mq=window.matchMedia('(orientation: portrait)'),isOpen=false;
   v.muted=true;v.defaultMuted=true;v.playsInline=true;v.controls=false;
+  function noop(){}
   function startTime(){return mq.matches&&isFinite(v.duration)?v.duration*.8:0}
-  function frame(){            /* landscape starts at zero; portrait seeks to the final fifth */
+  function frame(){
     v.loop=!mq.matches;
     if(mq.matches&&isFinite(v.duration)&&v.duration&&Math.abs(v.currentTime-startTime())>1){
       try{v.currentTime=startTime()}catch(e){}
     }
   }
-  function noop(){}
   function openReel(){
-    v.muted=true;
-    isOpen=true;
+    v.muted=true;isOpen=true;
     reel.classList.add('on');reel.setAttribute('aria-hidden','false');
-    var p=v.play();            /* call play before seeking, within the icon tap */
-    if(p&&p.catch)p.catch(noop);
-    frame();                   /* portrait seeks to the final fifth once metadata is ready */
-
-    history.pushState({reel:1},'','#monowheelers');
+    var p=v.play();if(p&&p.catch)p.catch(noop);
+    frame();history.pushState({reel:1},'','#monowheelers');
   }
   function closeReel(){
-    isOpen=false;v.pause();
-    reel.classList.remove('on');reel.setAttribute('aria-hidden','true');
-    /* Safari can leave the page horizontally displaced after the full-screen layer closes. */
-    window.scrollTo(0,0);
+    isOpen=false;v.pause();reel.classList.remove('on');reel.setAttribute('aria-hidden','true');window.scrollTo(0,0);
   }
   v.addEventListener('loadedmetadata',function(){if(isOpen)frame()});
-  v.addEventListener('ended',function(){
-    if(isOpen&&mq.matches){v.currentTime=startTime();var p=v.play();if(p&&p.catch)p.catch(noop)}
-  });
+  v.addEventListener('ended',function(){if(isOpen&&mq.matches){v.currentTime=startTime();var p=v.play();if(p&&p.catch)p.catch(noop)}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(isOpen)frame()});
   document.querySelectorAll('[data-reel]').forEach(function(a){
     a.addEventListener('click',function(e){
@@ -203,25 +455,20 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
   window.addEventListener('popstate',function(){if(isOpen)closeReel();window.scrollTo(0,0)});
   window.addEventListener('orientationchange',function(){if(!isOpen)window.scrollTo(0,0)});
   reel.addEventListener('click',function(e){
-    /* If playback did not start, use this tap to start it instead of closing the layer. */
-    if(e.target===v&&v.paused){
-      v.muted=true;
-      var p=v.play();
-      if(p&&p.catch)p.catch(noop);
-      return;
-    }
+    if(e.target===v&&v.paused){v.muted=true;var p=v.play();if(p&&p.catch)p.catch(noop);return}
     if(history.state&&history.state.reel)history.back();else closeReel();
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen)reel.click()});
 })();
 </script>
+
 <script>
 /* STEP 0 DIAGNOSTIC. Passive: logs only, changes no behaviour. Active only when the URL contains ?debug. Remove after diagnosis. */
 (function(){
   if(!/[?&]debug(\b|=|&|$)/.test(location.search))return;
   var reel=document.getElementById('reel'),v=reel&&reel.querySelector('video'),orbit=document.getElementById('orbit');
   if(!reel||!v||!orbit)return;
-  var de=document.documentElement,mq=matchMedia('(orientation: portrait)'),t0=Date.now(),lines=[],lastClick=0,run=1;
+  var de=document.documentElement,mq=matchMedia('(orientation: portrait)'),t0=Date.now(),lines=[],lastClick=0,run=1,seenPlaying=0,seenSeeked=0;
   var box=document.createElement('pre'),bar=document.createElement('div');
   var probe=document.createElement('div'); /* invisible; only measures what 100vw and 100svh currently resolve to */
   probe.style.cssText='position:fixed;left:0;top:0;width:100vw;height:100vh;height:100svh;visibility:hidden;pointer-events:none;z-index:-1';
@@ -243,12 +490,12 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
   function snap(label){
     var vv=window.visualViewport,r=orbit.getBoundingClientRect(),cs=getComputedStyle(orbit),clip=(r.right>innerWidth+1||r.left<-1);
     var pw=probe.offsetWidth,ph=probe.offsetHeight,w=parseFloat(cs.width);
-    var exp=ph>0?Math.max(300,Math.min(820,Math.min(pw-40,ph-250))):NaN; /* the same clamp() the stylesheet uses for --size */
+    var exp=NaN; /* collection.html has portrait and landscape-specific sizing rules; report measurements without assuming a single formula */
     log(label+' | inner='+innerWidth+'x'+innerHeight+' client='+de.clientWidth+'x'+de.clientHeight+' scrollW='+de.scrollWidth+
       ' scroll='+Math.round(scrollX)+','+Math.round(scrollY)+
       ' vv='+(vv?(vv.width.toFixed(0)+'x'+vv.height.toFixed(0)+' s'+vv.scale.toFixed(2)+' off'+vv.offsetLeft.toFixed(0)+','+vv.offsetTop.toFixed(0)+' pg'+vv.pageLeft.toFixed(0)):'n/a')+
-      ' | 100vw='+pw+' 100svh='+ph+' computed width='+cs.width+' expected='+(isFinite(exp)?exp+'px':'n/a')+
-      ((isFinite(exp)&&Math.abs(exp-w)>1)?'  **SIZE MISMATCH**':'')+
+      ' | 100vw='+pw+' 100svh='+ph+' computed width='+cs.width+
+      
       ' | orbit L'+r.left.toFixed(0)+' R'+r.right.toFixed(0)+' w'+r.width.toFixed(0)+(clip?'  **ORBIT OFF-SCREEN**':'')+
       ' '+(mq.matches?'portrait':'landscape'));
   }
@@ -273,7 +520,7 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
     log((own&&own.set&&typeof v.currentTime==='number')?'HOOK currentTime: installed':'HOOK currentTime: NOT installed (no own accessor)');
   }catch(e){log('HOOK currentTime: FAILED  '+e.name+': '+e.message)}
   ['loadstart','loadedmetadata','loadeddata','canplay','canplaythrough','play','playing','pause','waiting','stalled','suspend','abort','error','seeking','seeked','ended','emptied']
-    .forEach(function(n){v.addEventListener(n,function(){log('event '+n+'  '+V())})});
+    .forEach(function(n){v.addEventListener(n,function(){if(n==='playing')seenPlaying++;if(n==='seeked')seenSeeked++;log('event '+n+'  '+V())})});
 
   /* taps, rapid taps, pinch/zoom gestures */
   document.addEventListener('click',function(e){
@@ -282,13 +529,13 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
     var name=a?('ICON '+(a.getAttribute('aria-label')||'')):(t===v?'VIDEO':(t.id?('#'+t.id):t.tagName));
     log('CLICK '+name+'  dt='+dt+'ms  '+ua()+(dt&&dt<400?'  **RAPID**':'')+'  '+R()+'  '+V());
     if(a){
-      var tInitial=v.currentTime,tSettled=null; /* tInitial = reading at the instant of the tap, before the page's own handler runs */
+      var tInitial=v.currentTime,tSettled=null,playCount=seenPlaying,seekCount=seenSeeked; /* capture before page's click handler */
       snap('tap  ');
       [0,300,1000,2500,5000].forEach(function(ms){later('after tap',ms,function(){log(V()+'  '+R())})});
       after(1500,function(){tSettled=v.currentTime}); /* reading after the portrait seek has had time to land */
       after(5200,function(){
         var tNow=v.currentTime,fromSettled=(tSettled===null)?NaN:(tNow-tSettled),fromInitial=tNow-tInitial;
-        var state=(!isNaN(fromSettled)&&fromSettled>=1)?'ADVANCING':((!isNaN(fromSettled)&&fromSettled<0&&!v.paused)?'ADVANCING (position wrapped back, looped)':'NOT ADVANCING');
+        var state=(seenPlaying>playCount&&(!v.paused))?((!isNaN(fromSettled)&&fromSettled>=1)||(!isNaN(fromSettled)&&fromSettled<0)?'PLAYING / ADVANCING':'PLAYING EVENT SEEN; POSITION UNCLEAR'):((!v.paused)?'UNPAUSED, NO NEW PLAYING EVENT':'PAUSED / NO PLAYING EVENT');
         log('VERDICT video: '+state+'  t@tap='+tInitial.toFixed(2)+'  t@1.5s='+(tSettled===null?'n/a':tSettled.toFixed(2))+'  t@5.2s='+tNow.toFixed(2)+
           '  advanced(1.5s->5.2s)='+(isNaN(fromSettled)?'n/a':fromSettled.toFixed(2))+'s  advanced(tap->5.2s)='+fromInitial.toFixed(2)+'s  paused='+v.paused+' rs='+v.readyState+' ns='+v.networkState);
         snap('after5s');
