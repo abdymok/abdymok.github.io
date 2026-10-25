@@ -166,9 +166,11 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
   var mq=window.matchMedia('(orientation: portrait)'),isOpen=false;
   v.muted=true;v.defaultMuted=true;v.playsInline=true;v.controls=false;
   function startTime(){return mq.matches&&isFinite(v.duration)?v.duration*.8:0}
-  function frame(){            /* portrait: last fifth, looped by hand; landscape: whole film, native loop */
+  function frame(){            /* landscape starts at zero; portrait seeks to the final fifth */
     v.loop=!mq.matches;
-    if(isFinite(v.duration)&&v.duration)v.currentTime=startTime();
+    if(mq.matches&&isFinite(v.duration)&&v.duration&&Math.abs(v.currentTime-startTime())>1){
+      try{v.currentTime=startTime()}catch(e){}
+    }
   }
   function noop(){}
   function openReel(){
@@ -178,12 +180,14 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
     var p=v.play();            /* call play before seeking, within the icon tap */
     if(p&&p.catch)p.catch(noop);
     frame();                   /* portrait seeks to the final fifth once metadata is ready */
-    try{reel.focus({preventScroll:true})}catch(e){}
+
     history.pushState({reel:1},'','#monowheelers');
   }
   function closeReel(){
     isOpen=false;v.pause();
     reel.classList.remove('on');reel.setAttribute('aria-hidden','true');
+    /* Safari can leave the page horizontally displaced after the full-screen layer closes. */
+    window.scrollTo(0,0);
   }
   v.addEventListener('loadedmetadata',function(){if(isOpen)frame()});
   v.addEventListener('ended',function(){
@@ -196,7 +200,8 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
       e.preventDefault();openReel();
     });
   });
-  window.addEventListener('popstate',function(){if(isOpen)closeReel()});
+  window.addEventListener('popstate',function(){if(isOpen)closeReel();window.scrollTo(0,0)});
+  window.addEventListener('orientationchange',function(){if(!isOpen)window.scrollTo(0,0)});
   reel.addEventListener('click',function(e){
     /* If playback did not start, use this tap to start it instead of closing the layer. */
     if(e.target===v&&v.paused){
