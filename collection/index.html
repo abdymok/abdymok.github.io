@@ -173,11 +173,11 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
   function noop(){}
   function openReel(){
     v.muted=true;
-    frame();                   /* no-op if metadata is not in yet; the listener below finishes the job */
-    var p=v.play();            /* must happen synchronously in the click: this is what iOS counts as the gesture */
-    if(p&&p.catch)p.catch(noop);
     isOpen=true;
     reel.classList.add('on');reel.setAttribute('aria-hidden','false');
+    var p=v.play();            /* call play before seeking, within the icon tap */
+    if(p&&p.catch)p.catch(noop);
+    frame();                   /* portrait seeks to the final fifth once metadata is ready */
     try{reel.focus({preventScroll:true})}catch(e){}
     history.pushState({reel:1},'','#monowheelers');
   }
@@ -197,7 +197,14 @@ footer a{padding:10px 0 10px 12px}.motion-choice{display:inline-flex;align-items
     });
   });
   window.addEventListener('popstate',function(){if(isOpen)closeReel()});
-  reel.addEventListener('click',function(){
+  reel.addEventListener('click',function(e){
+    /* If playback did not start, use this tap to start it instead of closing the layer. */
+    if(e.target===v&&v.paused){
+      v.muted=true;
+      var p=v.play();
+      if(p&&p.catch)p.catch(noop);
+      return;
+    }
     if(history.state&&history.state.reel)history.back();else closeReel();
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&isOpen)reel.click()});
