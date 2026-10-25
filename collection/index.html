@@ -430,7 +430,12 @@ gtag('config', 'G-S3ZLJ9QQWD');
   function startTime(){return mq.matches&&isFinite(v.duration)?v.duration*.8:0}
   function frame(){
     v.loop=!mq.matches;
-    if(mq.matches&&isFinite(v.duration)&&v.duration&&Math.abs(v.currentTime-startTime())>1){
+    if(!mq.matches){
+      /* Landscape must always play the complete clip from its first frame. */
+      if(v.currentTime>0.5){try{v.currentTime=0}catch(e){}}
+      return;
+    }
+    if(isFinite(v.duration)&&v.duration&&Math.abs(v.currentTime-startTime())>1){
       try{v.currentTime=startTime()}catch(e){}
     }
   }
