@@ -43,12 +43,13 @@
   }
 }
 html[data-theme="light"] { color-scheme: light; }
-html[data-theme="light"] body {
+html[data-theme="light"] {
+  color-scheme: light;
   --bg: #ffffff; --fg: #111110; --yellow: #f4d35e; --red: #d00;
   --muted: #5e5d58;
 }
-html[data-theme="dark"] { color-scheme: dark; }
-html[data-theme="dark"] body {
+html[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #111110; --fg: #ecebe6; --yellow: #f4d35e; --red: #ff4a3d;
   --muted: #a2a19a;
 }
@@ -79,6 +80,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-of
   max-width: 1040px;
   margin: 0 auto;
   padding: 0 20px;
+  min-height: 100vh;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -101,6 +103,7 @@ main { flex: 1; display: flex; flex-direction: column; justify-content: center; 
 /* Orbit */
 
 .orbit {
+  --size: clamp(300px, min(100vw - 40px, 100vh - 240px), 860px);
   --size: clamp(300px, min(100vw - 40px, 100svh - 240px), 860px);
   --icon: 48px;
   --R: calc(var(--size) * .36);
@@ -156,7 +159,8 @@ main { flex: 1; display: flex; flex-direction: column; justify-content: center; 
 @keyframes unturn { to { transform: rotate(-360deg); } }
 
 .orbit:has(.item:hover),
-.orbit:has(.item:focus-visible) { --play: paused; }
+.orbit:has(.item:focus-visible),
+.orbit.touch-paused { --play: paused; }
 
 .spoke {
   position: absolute;
@@ -310,11 +314,13 @@ footer a { padding: 10px 0 10px 12px; }
 }
 
 @media(orientation:portrait) and (max-width:430px) {
+  .orbit { --size: calc(clamp(300px, min(100vw - 40px, 100vh - 240px), 860px) * .95); }
   .orbit { --size: calc(clamp(300px, min(100vw - 40px, 100svh - 240px), 860px) * .95); }
 }
 
 @media(orientation:landscape) and (max-height:500px) {
   .orbit {
+    --size: clamp(190px, min(100vw - 40px, 100vh - 150px), 420px);
     --size: clamp(190px, min(100vw - 40px, 100svh - 150px), 420px);
     --icon: clamp(34px, calc(var(--size) * .16), 42px);
     margin: 0 auto;
@@ -491,10 +497,13 @@ gtag('config', 'G-S3ZLJ9QQWD');
 <script>
 /* Reel interaction: preserve the ordinary link as a fallback if JavaScript is unavailable. */
 (function(){
-  var reel=document.getElementById('reel'),v=reel.querySelector('video');
+  var reel=document.getElementById('reel'),v=reel.querySelector('video'),wrap=document.querySelector('.wrap'),orbit=document.getElementById('orbit');
   var mq=window.matchMedia('(orientation: portrait)'),isOpen=false,trigger=null;
   v.muted=true;v.defaultMuted=true;v.playsInline=true;v.controls=false;
   function noop(){}
+  orbit.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')orbit.classList.add('touch-paused')});
+  window.addEventListener('pointerup',function(){orbit.classList.remove('touch-paused')});
+  window.addEventListener('pointercancel',function(){orbit.classList.remove('touch-paused')});
   function startTime(){return mq.matches&&isFinite(v.duration)?v.duration*.8:0}
   function frame(){
     v.loop=!mq.matches;
@@ -510,13 +519,14 @@ gtag('config', 'G-S3ZLJ9QQWD');
   function openReel(link){
     trigger=link;
     v.muted=true;isOpen=true;
+    wrap.setAttribute('inert','');
     reel.classList.add('on');reel.setAttribute('aria-hidden','false');
     reel.focus();
     var p=v.play();if(p&&p.catch)p.catch(noop);
     frame();history.pushState({reel:1},'','#monowheelers');
   }
   function closeReel(){
-    isOpen=false;v.pause();reel.classList.remove('on');reel.setAttribute('aria-hidden','true');window.scrollTo(0,0);
+    isOpen=false;v.pause();wrap.removeAttribute('inert');reel.classList.remove('on');reel.setAttribute('aria-hidden','true');window.scrollTo(0,0);
     if(trigger){trigger.focus();trigger=null}
   }
   v.addEventListener('loadedmetadata',function(){if(isOpen)frame()});
