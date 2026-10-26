@@ -93,6 +93,15 @@ main { flex: 1; display: flex; flex-direction: column; justify-content: center; 
   overflow: visible;
 }
 
+.scale {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: dial 72s steps(72) infinite;
+  animation-play-state: var(--play, running);
+}
+
+@keyframes dial { to { transform: rotate(-360deg); } }
+
 .track {
   position: absolute;
   left: calc(50% - var(--R));
@@ -278,7 +287,7 @@ footer a { padding: 10px 0 10px 12px; }
 }
 
 @media(prefers-reduced-motion:reduce) {
-  .ring, .unspin, .gyro ellipse { animation: none !important; }
+  .ring, .unspin, .gyro ellipse, .scale { animation: none !important; }
   *, *::before, *::after { transition: none !important; }
   .motion { display: none; }
 }
@@ -390,10 +399,12 @@ gtag('config', 'G-S3ZLJ9QQWD');
   var svg = document.getElementById('dial'), NS = 'http://www.w3.org/2000/svg';
   function el(n, a){ var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); return e; }
   svg.appendChild(el('circle', {cx: 50, cy: 50, r: 49.6, fill: 'none', stroke: '#111110', 'stroke-width': .25}));
+  var scale = el('g', {'class': 'scale'});
+  svg.appendChild(scale);
   for (var i = 0; i < 60; i++) {
     var t = i * Math.PI / 30, long = i % 5 === 0, r1 = 49.6, r2 = long ? 45.8 : 47.6;
     var s = Math.sin(t), c = Math.cos(t);
-    svg.appendChild(el('line', {
+    scale.appendChild(el('line', {
       x1: 50 + r1 * s, y1: 50 - r1 * c, x2: 50 + r2 * s, y2: 50 - r2 * c,
       stroke: '#111110', 'stroke-width': long ? .4 : .2
     }));
