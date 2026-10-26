@@ -33,10 +33,8 @@
     :root { --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
   }
   /* An explicit visitor choice overrides the device preference. */
-  html[data-theme="light"] { color-scheme: light; }
-  html[data-theme="light"] body { --bg: #ffffff; --fg: #111110; --muted: #5e5d58; --rule: #d8d6cf; --red: #d00; }
-  html[data-theme="dark"] { color-scheme: dark; }
-  html[data-theme="dark"] body { --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
+  html[data-theme="light"] { color-scheme: light; --bg: #ffffff; --fg: #111110; --muted: #5e5d58; --rule: #d8d6cf; --red: #d00; }
+  html[data-theme="dark"] { color-scheme: dark; --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
   html[data-theme="light"] .emblem img { filter: brightness(1.03); mix-blend-mode: multiply; }
   html[data-theme="dark"] .emblem img { filter: brightness(1.03) invert(1); mix-blend-mode: screen; }
 
