@@ -9,12 +9,12 @@
 <meta property="og:description" content="Dispatches from Kyiv. A record of Russia’s war against Ukraine and its consequences for civilian life and infrastructure.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://abdymok.github.io/">
-<meta property="og:image" content="https://raw.githubusercontent.com/abdymok/new_landing_page/main/monowheeler.png">
+<meta property="og:image" content="/images/monowheeler.png">
 <meta property="og:image:alt" content="Pen drawing of a runner and two electric unicycle riders on the Dnipro bank in Kyiv.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ukraine@war">
 <meta name="twitter:description" content="Dispatches from Kyiv. A record of Russia’s war against Ukraine and its consequences for civilian life and infrastructure.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/abdymok/new_landing_page/main/monowheeler.png">
+<meta name="twitter:image" content="/images/monowheeler.png">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
@@ -73,7 +73,7 @@
   .emblem { margin: 4px -20px 36px; }
   .emblem img {
     display: block; width: 100%; height: auto;
-    aspect-ratio: 3 / 1; object-fit: cover; object-position: 50% 58%;
+    aspect-ratio: auto;
     filter: brightness(1.03);
     mix-blend-mode: multiply;
   }
@@ -156,7 +156,7 @@ gtag('config','G-S3ZLJ9QQWD');
 
   <main>
     <figure class="emblem">
-      <img src="https://raw.githubusercontent.com/abdymok/new_landing_page/main/monowheeler.png" width="1743" height="902" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
+      <img src="/images/monowheeler.png" width="1743" height="902" fetchpriority="high" decoding="async" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
     </figure>
 
     <div class="grid">
@@ -205,6 +205,7 @@ gtag('config','G-S3ZLJ9QQWD');
     <div class="theme-choice" role="group" aria-label="Page background">
       <button type="button" data-theme-choice="dark" aria-pressed="false">black</button>
       <button type="button" data-theme-choice="light" aria-pressed="false">white</button>
+      <button type="button" data-theme-choice="auto" aria-pressed="false">auto</button>
     </div>
     <a href="https://abdymok.substack.com">Substack</a>
   </footer>
@@ -221,17 +222,21 @@ gtag('config','G-S3ZLJ9QQWD');
     return media && media.matches ? 'dark' : 'light';
   }
   function applyTheme(theme, save) {
-    root.setAttribute('data-theme', theme);
+    if (theme === 'auto') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', theme);
     buttons.forEach(function (button) {
       button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === theme));
     });
-    var themeColor = theme === 'dark' ? '#111110' : '#ffffff';
+    var themeColor = (theme === 'auto' ? systemTheme() : theme) === 'dark' ? '#111110' : '#ffffff';
     themeMetas.forEach(function (meta) {
       meta.removeAttribute('media');
       meta.setAttribute('content', themeColor);
     });
     if (save) {
-      try { localStorage.setItem('ukraine-at-war-theme', theme); } catch (e) {}
+      try {
+        if (theme === 'auto') localStorage.removeItem('ukraine-at-war-theme');
+        else localStorage.setItem('ukraine-at-war-theme', theme);
+      } catch (e) {}
     }
   }
 
@@ -241,10 +246,7 @@ gtag('config','G-S3ZLJ9QQWD');
     applyTheme(savedTheme, false);
   } else {
     /* No override: retain the device's automatic light/dark preference. */
-    root.removeAttribute('data-theme');
-    buttons.forEach(function (button) {
-      button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === systemTheme()));
-    });
+    applyTheme('auto', false);
   }
 
   buttons.forEach(function (button) {
@@ -259,9 +261,10 @@ gtag('config','G-S3ZLJ9QQWD');
       try { saved = localStorage.getItem('ukraine-at-war-theme'); } catch (e) {}
       if (saved !== 'dark' && saved !== 'light') {
         buttons.forEach(function (button) {
-          button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === systemTheme()));
+          button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === 'auto'));
         });
         themeMetas.forEach(function (meta) {
+          meta.removeAttribute('media');
           meta.setAttribute('content', systemTheme() === 'dark' ? '#111110' : '#ffffff');
         });
       }
