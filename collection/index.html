@@ -209,6 +209,16 @@ main { flex: 1; display: flex; flex-direction: column; justify-content: center; 
 
 .art img { display: block; width: 100%; height: 100%; object-fit: contain; }
 
+/* The orbit icons are external SVG images, so they need an explicit dark-mode inversion. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .art img { filter: invert(1); }
+  :root:not([data-theme="light"]) .item:hover .art img,
+  :root:not([data-theme="light"]) .item:focus-visible .art img { filter: none; }
+}
+html[data-theme="dark"] .art img { filter: invert(1); }
+html[data-theme="dark"] .item:hover .art img,
+html[data-theme="dark"] .item:focus-visible .art img { filter: none; }
+
 .sr {
   position: absolute;
   width: 1px;
