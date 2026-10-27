@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ukraine@war archive explorer</title>
+<style>
+:root{color-scheme:light;--ink:#171717;--muted:#666;--line:#d7d7d7;--paper:#fff;--soft:#f5f5f2;--accent:#2459c4}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.48 Georgia,"Times New Roman",serif}
+header,main{max-width:1180px;margin:auto;padding:22px}
+.brand{font:13px/1.4 system-ui,sans-serif;letter-spacing:.02em;margin:0 0 12px}
+.brand a{color:inherit;text-decoration:none}
+.brand-y{color:#c62828}
+.result h3 a,.post-link{color:inherit;text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:3px}
+.result h3 a:hover,.post-link:hover{color:var(--accent)}
+.result-url{font:12px/1.45 system-ui,sans-serif;overflow-wrap:anywhere;margin:4px 0;color:var(--muted)}
+.result-url a{color:inherit}
+.summary{margin:7px 0}
+header{border-bottom:1px solid var(--line)}h1{font-size:clamp(26px,4vw,40px);font-weight:normal;line-height:1.08;margin:0 0 8px}h2{font-size:22px;font-weight:normal;margin:28px 0 12px}p{margin:8px 0}.small,.muted{color:var(--muted);font:13px/1.5 system-ui,sans-serif}
+button,input,select{font:14px system-ui,sans-serif;border:1px solid #aaa;border-radius:2px;padding:9px;background:white;color:var(--ink)}
+button{cursor:pointer}button.primary{background:var(--accent);color:white;border-color:var(--accent)}button:disabled{opacity:.45;cursor:wait}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.status{background:var(--soft);padding:10px 12px;border-left:3px solid var(--accent);font:13px/1.5 system-ui,sans-serif;margin:12px 0}
+nav{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-top:20px}
+nav button{border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent}nav button[aria-selected=true]{border-bottom-color:var(--accent);font-weight:600}
+.panel{padding:8px 0 20px}.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px;margin:18px 0}.stat{padding:12px;border:1px solid var(--line)}.stat strong{font:26px/1.2 system-ui,sans-serif;display:block}.stat span{font:12px system-ui,sans-serif;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font:13px/1.45 system-ui,sans-serif}th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--line)}th{position:sticky;top:0;background:var(--soft);font-weight:600}td.title{min-width:210px}td.topics{min-width:180px;color:#444}
+.tablewrap{overflow:auto;max-height:65vh;border:1px solid var(--line)}.pill{display:inline-block;background:var(--soft);padding:2px 6px;margin:2px 3px 2px 0;font:11px system-ui,sans-serif}
+.result{padding:13px 0;border-bottom:1px solid var(--line)}.result h3{font-size:18px;font-weight:normal;margin:0}.result .meta{font:12px system-ui,sans-serif;color:var(--muted)}.snippet{font-size:14px;margin-top:5px;white-space:pre-wrap}
+canvas{width:100%;height:280px;border:1px solid var(--line);display:block}
+footer{border-top:1px solid var(--line);max-width:1180px;margin:20px auto;padding:16px 22px}
+@media(max-width:600px){header,main{padding:15px}th,td{padding:6px}.controls input{min-width:0;flex:1}}
+</style>
+</head>
+<body>
+<header>
+<p class="brand"><a href="https://abdymok.substack.com/" target="_blank" rel="noopener noreferrer" aria-label="ukraine@war on Substack">abd<span class="brand-y">y</span>mok</a></p>
+<h1>ukraine@war archive explorer</h1>
+<p>Search the annual Markdown archive, review posting patterns, and export a working post inventory.</p>
+<p class="small">Source repository: <a href="https://github.com/abdymok/substack_archive">abdymok/substack_archive</a>. This page reads the current default-branch files when you load it. October 2026 and later additions appear after the relevant Markdown file is updated and the page is refreshed.</p>
+<div class="controls"><button id="load" class="primary">Load / refresh archive</button><button id="exportPosts" disabled>Export post spreadsheet (CSV)</button><button id="exportEntities" disabled>Export candidate index (CSV)</button></div>
+<div id="status" class="status" role="status">Not loaded. Choose “Load / refresh archive” to fetch the annual Markdown files and metadata.</div>
+<div id="stats" class="stats"></div>
+<nav aria-label="Archive views">
+<button data-tab="search" aria-selected="true">Search</button><button data-tab="posts" aria-selected="false">Post spreadsheet</button><button data-tab="frequency" aria-selected="false">Posting frequency</button><button data-tab="entities" aria-selected="false">People, outlets & nicknames</button><button data-tab="method" aria-selected="false">Method & limits</button>
+</nav>
+</header>
+<main>
+<section id="search" class="panel">
+<h2>Search the archive</h2>
+<div class="controls"><input id="q" type="search" placeholder="Search title, body, subtitle, person, outlet…" style="flex:1;min-width:220px"><select id="year"><option value="">All years</option></select><select id="topic"><option value="">All topics</option></select><button id="searchBtn">Search</button></div>
+<p class="small">Search is performed against extracted post text. Topic tags are keyword-based navigation aids, not editorial classifications.</p>
+<div id="searchResults"></div>
+</section>
+<section id="posts" class="panel hidden">
+<h2>Post inventory</h2>
+<div class="controls"><input id="postFilter" type="search" placeholder="Filter rows…" style="flex:1;min-width:180px"><select id="postYear"><option value="">All years</option></select></div>
+<div class="tablewrap"><table><thead><tr><th>Date</th><th>Title</th><th>Subtitle</th><th>URL</th><th>Words</th><th>Topics</th><th>Source match</th></tr></thead><tbody id="postRows"></tbody></table></div>
+<p class="small">CSV export includes all parsed posts and source metadata where a match is available. Word counts are computed from Markdown text after removing common markup and image/link URLs.</p>
+</section>
+<section id="frequency" class="panel hidden">
+<h2>Posting frequency over time</h2>
+<div class="controls"><select id="freqUnit"><option value="month">Monthly</option><option value="year">Yearly</option></select><select id="freqKind"><option value="all">All parsed posts</option><option value="published">Published entries in metadata</option></select><button id="exportFreq">Export frequency CSV</button></div>
+<canvas id="chart" width="1100" height="300" aria-label="Posting frequency chart"></canvas>
+<div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Period</th><th>Posts</th></tr></thead><tbody id="freqRows"></tbody></table></div>
+<p class="small">The chart counts posts that could be parsed from Markdown. It does not infer a post for a missing date or count an unpublished metadata row as an archived text.</p>
+</section>
+<section id="entities" class="panel hidden">
+<h2>People, outlets and recurring-name candidates</h2>
+<p>These are automated candidates extracted from repeated capitalized names and phrases. They are not all confirmed people, outlets or nicknames. Review the evidence before treating aliases as the same person.</p>
+<div class="controls"><input id="entityFilter" type="search" placeholder="Filter candidates…" style="flex:1;min-width:200px"><select id="entityType"><option value="">All candidate types</option><option>Person/name candidate</option><option>Outlet/institution candidate</option><option>Nickname/phrase candidate</option></select></div>
+<div class="tablewrap"><table><thead><tr><th>Candidate</th><th>Type (heuristic)</th><th>Mentions</th><th>Post references</th></tr></thead><tbody id="entityRows"></tbody></table></div>
+</section>
+<section id="method" class="panel hidden">
+<h2>Method and limitations</h2>
+<ul>
+<li><strong>Canonical source:</strong> annual Markdown files in the linked repository. <code>posts.csv</code> contributes publication dates, titles, subtitles, audience and publication status when a match can be made.</li>
+<li><strong>Parsing:</strong> the page looks for dated title lines and post/day headings. Unusual formatting can cause a post to be missed or a boundary to be imperfect. Compare the parsed count with the archive's own annual totals.</li>
+<li><strong>Word count:</strong> approximate body-word count. Markdown syntax, image URLs and link destinations are removed, while visible link text remains.</li>
+<li><strong>Topics:</strong> transparent keyword rules. A tag means a term or related phrase appeared, not that it was the post's main argument.</li>
+<li><strong>Entity index:</strong> heuristic name candidates from repeated capitalized phrases. Nicknames, aliases, irony, transliteration variants and outlet names require human review. The app intentionally does not merge identities automatically.</li>
+<li><strong>Freshness:</strong> refresh the page after updating a yearly Markdown file. If the raw file is unavailable or parsing fails, the status area identifies the affected year.</li>
+<li><strong>Text-only scope:</strong> photos, maps, illustrations, screenshots and other visual evidence are not indexed by this tool.</li>
+</ul>
+<p>For a rigorous, publishable index, the candidate list should be curated in a separate alias register with canonical name, aliases, type, confidence and supporting post references.</p>
+</section>
+</main>
+<footer class="small">A client-side research aid. No source files are modified by this page. Exports are generated in your browser. <span class="brand"><a href="https://abdymok.substack.com/" target="_blank" rel="noopener noreferrer" aria-label="ukraine@war on Substack">abd<span class="brand-y">y</span>mok</a></span></footer>
+<script>
+(() => {
+'use strict';
+const owner='abdymok', repo='substack_archive', branch='main';
+const years=[2019,2020,2021,2022,2023,2024,2025,2026];
+const rawBase=`https://raw.githubusercontent.com/${owner}/${repo}/${branch}/`;
+let posts=[], metadata=[], entities=[], frequency=[], loadErrors=[];
+const $=id=>document.getElementById(id);
+const topicRules={
+'Russia / Kremlin':/\brussia\b|\brussian\b|\bkremlin\b|\bputin\b/i,
+'Ukraine / politics':/\bukraine\b|\bukrainian\b|\bzelenskyy?\b|\bverkhovna rada\b/i,
+'Kyiv / daily life':/\bkyiv\b|\bkiev\b|\bkyivan\b|\bkyivans\b/i,
+'War / military':/\bwar\b|\bmissile\b|\bdrones?\b|\bdrone\b|\bfront line\b|\bfrontline\b|\bair defense\b|\bair defence\b|\bartillery\b|\boccupation\b|\binvasion\b/i,
+'United States':/\bunited states\b|\busa\b|\bu\.s\.\b|\btrump\b|\bwhite house\b|\bcongress\b|\bwashington\b/i,
+'Europe / NATO':/\beurope\b|\beuropean\b|\bnato\b|\beu\b|\beuropean union\b|\bbrussels\b/i,
+'Diplomacy / negotiations':/\bdiplomac\w*\b|\bnegotiat\w*\b|\bceasefire\b|\bpeace deal\b|\bpeace plan\b|\bsummit\b|\benvoy\b/i,
+'Energy / infrastructure':/\benergy\b|\belectric\w*\b|\bpower plant\b|\bpower grid\b|\binfrastructure\b|\bblackout\b|\bsubstation\b|\bnuclear\b/i,
+'Media / propaganda':/\bmedia\b|\bjournalis\w*\b|\bpropaganda\b|\bnewsmax\b|\bcnn\b|\bfox news\b|\bsubstack\b|\bheadline\b|\bjournalist\b/i,
+'History / memory':/\bhistory\b|\bhistorical\b|\bmemory\b|\barchive\b|\banniversary\b|\bsoviet\b|\bussr\b/i,
+'Culture / literature':/\bpoet\w*\b|\bpoetry\b|\bnovel\b|\bbook\b|\bliterature\b|\bwriter\b|\breading\b|\bfilm\b|\bmovie\b/i,
+'Civilian harm':/\bcivilian\w*\b|\bcasualt\w*\b|\bdead\b|\bkilled\b|\binjur\w*\b|\bchildren\b|\bchild\b|\bwar crime\b/i,
+'China / Taiwan':/\bchina\b|\bchinese\b|\btaiwan\b|\bbeijing\b/i,
+'Religion / church':/\bchurch\b|\bmonastery\b|\borthodox\b|\breligio\w*\b|\bpriest\b|\bpope\b/i
+};
+const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function csvCell(x){return '"'+String(x??'').replace(/"/g,'""')+'"'}
+function download(name, rows, headers){
+ const csv=[headers,...rows].map(r=>r.map(csvCell).join(',')).join('\r\n');
+ const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function stripMarkdown(s){
+ return s.replace(/```[\s\S]*?```/g,' ').replace(/!\[[^\]]*\]\([^)]*\)/g,' ')
+ .replace(/\[([^\]]+)\]\((?:[^()]|\([^)]*\))*\)/g,'$1')
+ .replace(/<[^>]+>/g,' ').replace(/https?:\/\/\S+/g,' ')
+ .replace(/^\s{0,3}#{1,6}\s+/gm,'').replace(/^\s*[-*_]{3,}\s*$/gm,' ')
+ .replace(/[`*_~>#|]/g,' ').replace(/&nbsp;|&amp;|&quot;|&#39;/g,' ')
+ .replace(/\s+/g,' ').trim();
+}
+function wordCount(s){const t=stripMarkdown(s);return t?t.split(/\s+/).filter(Boolean).length:0}
+function tagsFor(s){return Object.entries(topicRules).filter(([k,re])=>re.test(s)).map(([k])=>k)}
+function parseMarkdown(md, year){
+ const lines=md.replace(/\r/g,'').split('\n');
+ const starts=[];
+ // Archive variants: older files use the ## heading as title and the dated line as subtitle;
+ // later files use a "## Day N" heading and put the post title on the dated line.
+ for(let i=0;i<lines.length;i++){
+   const m=lines[i].match(/^\s*(\d{4}-\d{2}-\d{2})(?:\s*[·|—–-]\s*(.*?))?\s*$/);
+   if(!m || Number(m[1].slice(0,4))!==year) continue;
+   const heading=lines.slice(Math.max(0,i-3),i).reverse().find(x=>/^\s*##\s+/.test(x))||'';
+   const headingText=heading.replace(/^\s*##\s+/,'').trim();
+   const dayMatch=headingText.match(/^Day\s+([\w-]+)/i);
+   const datedText=(m[2]||'').trim();
+   let title='',subtitle='';
+   if(dayMatch){ title=datedText || headingText; }
+   else { title=headingText; subtitle=datedText; }
+   if(title) starts.push({line:i,date:m[1],title,subtitle,heading:headingText,day:dayMatch?dayMatch[1]:''});
+ }
+ return starts.map((s,j)=>{
+   const end=j+1<starts.length?starts[j+1].line:lines.length;
+   const raw=lines.slice(s.line+1,end).join('\n');
+   const body=raw.replace(/^\s*---+\s*$/gm,' ').trim();
+   const full=`${s.title}\n${s.subtitle}\n${body}`;
+   return {date:s.date,year,title:s.title,subtitle:s.subtitle||'',word_count:wordCount(body),topics:tagsFor(full),body:stripMarkdown(body),raw_body:body,day:s.day,source:`${year}.md`,source_line:s.line+1,metadata_match:'No metadata match yet'};
+ }).filter(p=>p.title);
+}
+function parseCSV(text){
+ const rows=[];let row=[],field='',quoted=false;
+ for(let i=0;i<text.length;i++){
+  const c=text[i];
+  if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}
+  else if(c==='"')quoted=true;
+  else if(c===','){row.push(field);field=''}
+  else if(c==='\n'){row.push(field);rows.push(row);row=[];field=''}
+  else if(c!=='\r')field+=c;
+ }
+ if(field.length||row.length){row.push(field);rows.push(row)}
+ if(!rows.length)return [];
+ const heads=rows.shift();return rows.filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(heads.map((h,i)=>[h,r[i]||''])));
+}
+function matchMetadata(){
+ const byDate=new Map(), byTitle=new Map();
+ for(const m of metadata){
+   const title=(m.title||'').trim(), sub=(m.subtitle||'').trim();
+   const date=(m.post_date||'').slice(0,10);
+   if(date){
+     if(!byDate.has(date))byDate.set(date,[]);
+     byDate.get(date).push(m);
+   }
+   for(const candidate of [title,sub].filter(Boolean)){
+     if(!byTitle.has(candidate.toLowerCase()))byTitle.set(candidate.toLowerCase(),m);
+   }
+ }
+ for(const p of posts){
+   const dated=byDate.get(p.date)||[];
+   let m=dated.find(x=>(x.subtitle||'').trim().toLowerCase()===p.title.toLowerCase())
+      ||dated.find(x=>(x.title||'').trim().toLowerCase()===p.title.toLowerCase())
+      ||dated[0]||byTitle.get(p.title.toLowerCase());
+   if(m){
+     const csvSubtitle=(m.subtitle||'').trim();
+     // In this export, the Substack "subtitle" field sometimes contains the visible title.
+     if(!p.subtitle && csvSubtitle && csvSubtitle.toLowerCase()!==p.title.toLowerCase() && !/^Day\\s+\\w+/i.test(csvSubtitle)) p.subtitle=csvSubtitle;
+     p.post_id=m.post_id||'';p.published=m.is_published||'';p.audience=m.audience||'';p.type=m.type||'';
+     p.metadata_match=dated.length?'Matched by date':'Matched by title';
+   } else {p.post_id='';p.published='';p.audience='';p.type='';p.post_url='';}
+   const slug=(p.post_id.split('.').slice(1).join('.')).trim();
+   p.post_url=(String(p.published).toLowerCase()==='true' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug))?'https://abdymok.substack.com/p/'+slug:'';
+   p.summary=makeSummary(p.body);
+ }
+}
+function makeSummary(body){
+ const clean=stripMarkdown(body||'').replace(/\s+/g,' ').trim();
+ if(!clean)return '';
+ const first=clean.match(/^.{35,260}?(?:[.!?](?=\s|$)|$)/);
+ let summary=(first?first[0]:clean.slice(0,220)).trim();
+ if(summary.length>240)summary=summary.slice(0,237).replace(/\s+\S*$/,'')+'…';
+ else if(clean.length>summary.length && !/[.!?…]$/.test(summary))summary=summary.replace(/[,:;\s]+$/,'')+'…';
+ return summary;
+}
+function buildEntities(){
+ const map=new Map();
+ const stop=new Set(['Day','The','This','That','There','When','What','Where','Why','How','And','But','For','From','With','Into','After','Before','About','Against','Over','Under','More','Less','One','Two','Three','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','January','February','March','April','May','June','July','August','September','October','November','December','Ukraine','Ukrainian','Russia','Russian','Kyiv','Kiev','United States']);
+ const outletWords=/news|media|post|times|journal|telegraph|guardian|interfax|substack|cnn|bbc|reuters|agency|radio|television|tv|network|magazine|press|monitor|report|independent|politico|newsmax/i;
+ const nicknameWords=/club|brigade|gang|brotherhood|friends|crew|nickname|called|known as/i;
+ for(const p of posts){
+  const text=(p.title+' '+p.subtitle+' '+p.body).replace(/https?:\/\/\S+/g,' ');
+  const candidates=text.match(/\b(?:[A-Z][a-zÀ-ž’'-]{1,}(?:\s+(?:[A-Z][a-zÀ-ž’'-]{1,}|of|the|and|&)){0,3})\b/g)||[];
+  const seen=new Set();
+  for(let c of candidates){
+   c=c.replace(/\s+/g,' ').trim().replace(/[.,:;!?]+$/,'');
+   const words=c.split(/\s+/);
+   if(words.some(w=>stop.has(w))||c.length<4||words.length>4||/^(Day|Chapter|Part)\s/i.test(c))continue;
+   if(!/[A-Z]/.test(c[0])||/^[A-Z]{1,3}$/.test(c))continue;
+   if(seen.has(c.toLowerCase()))continue;seen.add(c.toLowerCase());
+   const key=c.toLowerCase();
+   if(!map.has(key))map.set(key,{name:c,count:0,refs:[],context:[]});
+   const e=map.get(key);e.count++;
+   if(e.refs.length<12)e.refs.push(`${p.date} — ${p.title}`);
+   if(e.context.length<3)e.context.push(p.title);
+  }
+ }
+ entities=[...map.values()].filter(e=>e.count>=2).map(e=>{
+  const n=e.name;
+  const type=outletWords.test(n)?'Outlet/institution candidate':nicknameWords.test(n)?'Nickname/phrase candidate':'Person/name candidate';
+  return {...e,type,refs:e.refs.join(' | ')};
+ }).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
+}
+function populateSelects(){
+ for(const id of ['year','postYear']){$(id).innerHTML='<option value="">All years</option>'+[...new Set(posts.map(p=>p.year))].sort().map(y=>`<option>${y}</option>`).join('')}
+ $('topic').innerHTML='<option value="">All topics</option>'+Object.keys(topicRules).map(t=>`<option>${escapeHtml(t)}</option>`).join('');
+}
+function renderStats(){
+ const n=posts.length, word=posts.reduce((a,p)=>a+p.word_count,0), yrs=[...new Set(posts.map(p=>p.year))];
+ $('stats').innerHTML=[['Parsed posts',n.toLocaleString()],['Approx. words',word.toLocaleString()],['Years represented',yrs.length],['Name candidates',entities.length]].map(([l,v])=>`<div class="stat"><strong>${v}</strong><span>${l}</span></div>`).join('');
+}
+function renderPosts(){
+ const q=$('postFilter').value.toLowerCase(),y=$('postYear').value;
+ const filtered=posts.filter(p=>(!y||String(p.year)===y)&&(!q||[p.date,p.title,p.subtitle,p.body,p.topics.join(' ')].join(' ').toLowerCase().includes(q)));
+ $('postRows').innerHTML=filtered.slice(0,5000).map(p=>`<tr><td>${escapeHtml(p.date)}</td><td class="title">${p.post_url?`<a class="post-link" href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a>`:escapeHtml(p.title)}</td><td>${escapeHtml(p.subtitle)}</td><td>${p.post_url?`<a class="post-link" href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener noreferrer">Substack</a>`:'—'}</td><td>${p.word_count.toLocaleString()}</td><td class="topics">${p.topics.map(t=>`<span class="pill">${escapeHtml(t)}</span>`).join('')}</td><td>${escapeHtml(p.metadata_match)}</td></tr>`).join('');
+}
+function renderSearch(){
+ const q=$('q').value.trim().toLowerCase(),y=$('year').value,t=$('topic').value;
+ const results=posts.filter(p=>(!y||String(p.year)===y)&&(!t||p.topics.includes(t))&&(!q||[p.date,p.title,p.subtitle,p.body].join(' ').toLowerCase().includes(q)));
+ $('searchResults').innerHTML=`<p class="small">${results.length.toLocaleString()} matching posts${results.length>100?' · showing first 100':''}</p>`+results.slice(0,100).map(p=>`<article class="result"><h3>${p.post_url?`<a href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a>`:escapeHtml(p.title)}</h3><div class="meta">${escapeHtml(p.date)} · ${p.word_count.toLocaleString()} words · ${escapeHtml(p.source)}${p.day?' · '+escapeHtml('Day '+p.day):''}</div>${p.subtitle?`<div>${escapeHtml(p.subtitle)}</div>`:''}${p.post_url?`<div class="result-url"><a href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.post_url)}</a></div>`:''}${p.summary?`<div class="summary">${escapeHtml(p.summary)}</div>`:''}<div>${p.topics.map(t=>`<span class="pill">${escapeHtml(t)}</span>`).join('')}</div></article>`).join('');
+}
+function renderEntities(){
+ const q=$('entityFilter').value.toLowerCase(),t=$('entityType').value;
+ const filtered=entities.filter(e=>(!t||e.type===t)&&(!q||[e.name,e.type,e.refs].join(' ').toLowerCase().includes(q)));
+ $('entityRows').innerHTML=filtered.slice(0,1500).map(e=>`<tr><td>${escapeHtml(e.name)}</td><td>${escapeHtml(e.type)}</td><td>${e.count}</td><td>${escapeHtml(e.refs)}</td></tr>`).join('');
+}
+function makeFrequency(){
+ const unit=$('freqUnit').value,kind=$('freqKind').value,counts=new Map();
+ for(const p of posts){if(kind==='published'&&p.published!=='true')continue;const k=unit==='year'?String(p.year):p.date.slice(0,7);counts.set(k,(counts.get(k)||0)+1)}
+ frequency=[...counts.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([period,count])=>({period,count}));
+ $('freqRows').innerHTML=frequency.map(f=>`<tr><td>${f.period}</td><td>${f.count}</td></tr>`).join('');
+ drawChart(frequency);
+}
+function drawChart(data){
+ const c=$('chart'),ctx=c.getContext('2d'),ratio=window.devicePixelRatio||1,w=c.clientWidth||900,h=280;
+ c.width=w*ratio;c.height=h*ratio;ctx.scale(ratio,ratio);ctx.clearRect(0,0,w,h);
+ if(!data.length){ctx.fillText('No frequency data yet',20,30);return}
+ const max=Math.max(...data.map(d=>d.count),1),left=42,right=12,top=18,bottom=48,plotW=w-left-right,plotH=h-top-bottom;
+ ctx.strokeStyle='#d7d7d7';ctx.fillStyle='#666';ctx.font='11px system-ui';ctx.lineWidth=1;
+ for(let i=0;i<=4;i++){const y=top+plotH*i/4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillText(String(Math.round(max*(4-i)/4)),5,y+4)}
+ const step=plotW/data.length,bw=Math.max(1,step*.68);ctx.fillStyle='#2459c4';
+ data.forEach((d,i)=>{const bh=d.count/max*(plotH-4),x=left+i*step+(step-bw)/2,y=top+plotH-bh;ctx.fillRect(x,y,bw,bh);if(data.length<28||i%Math.ceil(data.length/20)===0){ctx.save();ctx.translate(x+bw/2,h-8);ctx.rotate(-Math.PI/4);ctx.textAlign='right';ctx.fillStyle='#444';ctx.fillText(d.period,0,0);ctx.restore();ctx.fillStyle='#2459c4'}});
+}
+async function load(){
+ $('load').disabled=true;loadErrors=[];posts=[];metadata=[];
+ $('status').textContent='Loading posts.csv and annual Markdown files…';
+ try{
+  const mr=await fetch(rawBase+'posts.csv',{cache:'no-store'});if(!mr.ok)throw new Error('posts.csv returned HTTP '+mr.status);metadata=parseCSV(await mr.text());
+ }catch(e){loadErrors.push('posts.csv: '+e.message)}
+ for(const year of years){
+  $('status').textContent=`Loading ${year}.md…`;
+  try{
+   const r=await fetch(rawBase+year+'.md',{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);
+   const md=await r.text();const parsed=parseMarkdown(md,year);
+   if(!parsed.length)throw new Error('file loaded, but no dated post headings matched the expected pattern');
+   posts.push(...parsed);
+  }catch(e){loadErrors.push(`${year}.md: ${e.message}`)}
+ }
+ posts.sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title));
+ matchMetadata();buildEntities();populateSelects();renderStats();renderPosts();renderSearch();renderEntities();makeFrequency();
+ $('exportPosts').disabled=!posts.length;$('exportEntities').disabled=!entities.length;
+ $('status').textContent=`Loaded ${posts.length.toLocaleString()} parsed posts from ${new Set(posts.map(p=>p.year)).size} year files. ${metadata.length.toLocaleString()} metadata rows read.`+(loadErrors.length?' Issues: '+loadErrors.join(' · '):' All annual files parsed.');
+ $('load').disabled=false;
+}
+function postCSVRows(){return posts.map(p=>[p.date,p.title,p.subtitle,p.post_url,p.summary,p.word_count,p.topics.join('; '),p.post_id,p.published,p.audience,p.type,p.metadata_match,p.source,p.source_line,p.day])}
+$('load').addEventListener('click',load);
+$('exportPosts').addEventListener('click',()=>download('ukraine-war-post-inventory.csv',postCSVRows(),['date','title','subtitle','post_url','summary_excerpt','word_count_approx','key_topics_keyword_tags','post_id','is_published','audience','type','metadata_match','source_file','source_line','day_number']));
+$('exportEntities').addEventListener('click',()=>download('ukraine-war-entity-candidates.csv',entities.map(e=>[e.name,e.type,e.count,e.refs]),['candidate','heuristic_type','post_count','sample_post_references']));
+$('searchBtn').addEventListener('click',renderSearch);$('q').addEventListener('keydown',e=>{if(e.key==='Enter')renderSearch()});
+['postFilter','postYear'].forEach(id=>$(id).addEventListener(id==='postFilter'?'input':'change',renderPosts));
+['year','topic'].forEach(id=>$(id).addEventListener('change',renderSearch));
+['entityFilter','entityType'].forEach(id=>$(id).addEventListener(id==='entityFilter'?'input':'change',renderEntities));
+['freqUnit','freqKind'].forEach(id=>$(id).addEventListener('change',makeFrequency));
+$('exportFreq').addEventListener('click',()=>download('ukraine-war-posting-frequency.csv',frequency.map(f=>[f.period,f.count]),['period','post_count']));
+document.querySelectorAll('nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('nav button[data-tab]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
+ document.querySelectorAll('main .panel').forEach(s=>s.classList.toggle('hidden',s.id!==b.dataset.tab));
+ if(b.dataset.tab==='frequency')makeFrequency();
+}));
+window.addEventListener('resize',()=>drawChart(frequency));
+})();
+</script>
+</body>
+</html>
