@@ -20,13 +20,41 @@
 <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M3 32H45M7.5 32V26M18 32V26M28.5 32V26M39 32V14'/%3E%3C/svg%3E">
 <style>
+  @font-face {
+    font-family: "Zakon";
+    src: url("/40/Zakon-Regular.otf") format("opentype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Zakon";
+    src: url("/40/Zakon-Italic.otf") format("opentype");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Zakon";
+    src: url("/40/Zakon-Bold.otf") format("opentype");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Zakon";
+    src: url("/40/Zakon-BoldItalic.otf") format("opentype");
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+  }
   :root {
     --bg: #ffffff;
     --fg: #111110;
     --muted: #5e5d58;
     --rule: #d8d6cf;
     --red: #d00;
-    --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --serif: "Zakon", Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
