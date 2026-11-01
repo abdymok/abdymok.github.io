@@ -1,4 +1,3 @@
-
 name: Back up to GitLab
 
 on:
@@ -23,6 +22,6 @@ jobs:
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
-          git fetch origin '+refs/heads/*:refs/heads/*' --tags
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --tags
           git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@gitlab.com/abdymok-group/abdymok-github-io.git"
-          git push gitlab 'refs/heads/*:refs/heads/*' --tags
+          git push gitlab 'refs/remotes/origin/*:refs/heads/*' --tags
