@@ -1,0 +1,28 @@
+
+name: Back up to GitLab
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 1 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out all GitHub history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push branches and tags to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git fetch origin '+refs/heads/*:refs/heads/*' --tags
+          git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@gitlab.com/abdymok-group/abdymok-github-io.git"
+          git push gitlab 'refs/heads/*:refs/heads/*' --tags
