@@ -3,68 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="https://abdymok.github.io/">
 <title>ukraine@war</title>
-<meta name="description" content="Dispatches from Kyiv. A record of Russia’s war against Ukraine and its consequences for civilian life and infrastructure.">
+<meta name="description" content="Dispatches from Kyiv, and the record behind them.">
 <meta property="og:title" content="ukraine@war">
-<meta property="og:description" content="Dispatches from Kyiv. A record of Russia’s war against Ukraine and its consequences for civilian life and infrastructure.">
+<meta property="og:description" content="Dispatches from Kyiv, and the record behind them.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://abdymok.github.io/">
-<meta property="og:image" content="https://abdymok.github.io/images/monowheeler.png">
-<meta property="og:image:alt" content="Pen drawing of a runner and two electric unicycle riders on the Dnipro bank in Kyiv.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ukraine@war">
-<meta name="twitter:description" content="Dispatches from Kyiv. A record of Russia’s war against Ukraine and its consequences for civilian life and infrastructure.">
-<meta name="twitter:image" content="https://abdymok.github.io/images/monowheeler.png">
+<meta property="og:site_name" content="ukraine@war">
+<meta property="og:image" content="https://abdymok.github.io/monowheeler.png">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M3 32H45M7.5 32V26M18 32V26M28.5 32V26M39 32V14'/%3E%3C/svg%3E">
 <style>
-  @font-face {
-    font-family: "Zakon";
-    src: url("/40/Zakon-Regular.otf") format("opentype");
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Zakon";
-    src: url("/40/Zakon-Italic.otf") format("opentype");
-    font-style: italic;
-    font-weight: 400;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Zakon";
-    src: url("/40/Zakon-Bold.otf") format("opentype");
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Zakon";
-    src: url("/40/Zakon-BoldItalic.otf") format("opentype");
-    font-style: italic;
-    font-weight: 700;
-    font-display: swap;
-  }
   :root {
     --bg: #ffffff;
     --fg: #111110;
     --muted: #5e5d58;
     --rule: #d8d6cf;
     --red: #d00;
-    --serif: "Zakon", Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
   }
-  /* An explicit visitor choice overrides the device preference. */
-  html[data-theme="light"] { color-scheme: light; --bg: #ffffff; --fg: #111110; --muted: #5e5d58; --rule: #d8d6cf; --red: #d00; }
-  html[data-theme="dark"] { color-scheme: dark; --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
-  html[data-theme="light"] .emblem img { filter: brightness(1.03); mix-blend-mode: multiply; }
-  html[data-theme="dark"] .emblem img { filter: brightness(1.03) invert(1); mix-blend-mode: screen; }
 
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -99,7 +63,7 @@
   .emblem { margin: 4px -20px 36px; }
   .emblem img {
     display: block; width: 100%; height: auto;
-    aspect-ratio: auto;
+    aspect-ratio: 3 / 1; object-fit: cover; object-position: 50% 58%;
     filter: brightness(1.03);
     mix-blend-mode: multiply;
   }
@@ -111,14 +75,17 @@
   h1 {
     margin: 0;
     font: 400 34px/1.1 var(--serif);
-    letter-spacing: normal;
+    letter-spacing: -0.01em;
   }
   .tagline {
     margin: 12px 0 28px;
     max-width: 26ch;
-    font: 400 19px/1.4 var(--serif);
+    font: 400 19px/1.35 var(--serif);
     color: var(--muted);
   }
+  .statusline { margin: 18px 0 0; max-width: 42ch; font-size: 12px; line-height: 1.55; color: var(--muted); }
+  .statusline a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .statusnote { margin: 3px 0 0; max-width: 42ch; font-size: 11px; line-height: 1.45; color: var(--muted); }
 
   nav ul { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
   nav li { border-top: 1px solid var(--rule); }
@@ -141,15 +108,6 @@
   }
   footer a { display: inline-block; padding: 12px 0 12px 16px; }
   footer a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-  .theme-choice { display: inline-flex; align-items: center; gap: 9px; }
-  .theme-choice button {
-    appearance: none; border: 0; background: transparent; color: var(--muted);
-    padding: 10px 0; font: inherit; font-size: 13px; cursor: pointer;
-    text-underline-offset: 4px; text-decoration-thickness: 1px;
-  }
-  .theme-choice button[aria-pressed="true"] { color: var(--fg); text-decoration: underline; }
-  .theme-choice button:hover { color: var(--fg); }
-  .theme-choice button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
   /* wider screens: title left, navigation right */
   @media (min-width: 860px) {
@@ -162,13 +120,6 @@
     footer { margin-top: 96px; padding-bottom: 32px; }
   }
 </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3ZLJ9QQWD"></script>
-<script>
-window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments)}
-gtag('js',new Date());
-gtag('config','G-S3ZLJ9QQWD');
-</script>
 </head>
 <body>
 <div class="wrap">
@@ -182,13 +133,15 @@ gtag('config','G-S3ZLJ9QQWD');
 
   <main>
     <figure class="emblem">
-      <img src="/images/monowheeler.png" width="1743" height="902" fetchpriority="high" decoding="async" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
+      <img src="monowheeler.png" width="1743" height="902" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
     </figure>
 
     <div class="grid">
       <div class="intro">
         <h1>ukraine@war</h1>
-        <p class="tagline">ul<span class="y">t</span>ra-competitive sur<span class="y">v</span>ival</p>
+        <p class="tagline">Dispatches from Kyiv, and the record behind them.</p>
+        <p class="statusline"><time datetime="2026-11-06">Updated Nov. 6, 2026</time> · <a href="/40/articles/critical-infrastructure-damage.html">254 deaths documented in tracked incidents*</a> · <a href="/40/articles/critical-infrastructure-damage.html">254 Kyiv air alerts · 221h 33m under alert</a></p>
+        <p class="statusnote">*Provisional subtotal for selected incidents, not a complete national count. Figures are current through Nov. 6.</p>
       </div>
 
       <nav aria-label="Sections">
@@ -215,16 +168,16 @@ gtag('config','G-S3ZLJ9QQWD');
             </a>
           </li>
           <li>
-            <a href="/collection/">
+            <a href="/mural/">
               <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><defs><clipPath id="fragment"><polygon points="4,3.5 44,4.5 45,44 3,45"/></clipPath></defs><g clip-path="url(#fragment)"><path d="M0 31 C11 7 24 41 49 13" stroke-width="2.8"/><path d="M17 0 C13 15 22 30 14 49" stroke-width="1.7"/><path d="M27 31 L42 35" stroke-width="3.4"/><path d="M30 9 C39 2 44 12 34 17" stroke-width="1.5"/><path d="M6 41 L12 35" stroke-width="1.4"/></g></svg>
-              <span><span class="label">Collection</span><span class="desc">Small visual projects</span></span>
+              <span><span class="label">Mural</span><span class="desc">A gallery of ukraine@war posts</span></span>
               <span class="arrow" aria-hidden="true">&rarr;</span>
             </a>
           </li>
           <li>
-            <a href="https://abdymok.github.io/bibliography/">
+            <a href="https://abdymok.github.io/substack_archive/working_set/2023-2026_annotated_bibliography.html">
               <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="5" width="30" height="38" rx="2"/><path d="M14 14h6M24 14h10M14 23h6M24 23h10M14 32h6M24 32h10"/><path d="M24 17.5h7M24 26.5h7M24 35.5h7" stroke-width="1.5" opacity=".55"/></svg>
-              <span><span class="label">Annotated bibliography</span><span class="desc">A working document: a provisional annotated bibliography.</span></span>
+              <span><span class="label">Bibliography</span><span class="desc">An annotated guide to the Ukraine@war archive.</span></span>
               <span class="arrow" aria-hidden="true">&rarr;</span>
             </a>
           </li>
@@ -235,75 +188,9 @@ gtag('config','G-S3ZLJ9QQWD');
 
   <footer>
     <span>Kyiv</span>
-    <div class="theme-choice" role="group" aria-label="Page background">
-      <button type="button" data-theme-choice="dark" aria-pressed="false">black</button>
-      <button type="button" data-theme-choice="light" aria-pressed="false">white</button>
-      <button type="button" data-theme-choice="auto" aria-pressed="false">auto</button>
-    </div>
-    <a href="https://abdymok.substack.com">Substack</a>
+    <a href="https://abdymok.substack.com">Subscribe on Substack</a>
   </footer>
 
 </div>
-<script>
-(function () {
-  var root = document.documentElement;
-  var buttons = document.querySelectorAll('[data-theme-choice]');
-  var themeMetas = document.querySelectorAll('meta[name="theme-color"]');
-  var media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-
-  function systemTheme() {
-    return media && media.matches ? 'dark' : 'light';
-  }
-  function applyTheme(theme, save) {
-    if (theme === 'auto') root.removeAttribute('data-theme');
-    else root.setAttribute('data-theme', theme);
-    buttons.forEach(function (button) {
-      button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === theme));
-    });
-    var themeColor = (theme === 'auto' ? systemTheme() : theme) === 'dark' ? '#111110' : '#ffffff';
-    themeMetas.forEach(function (meta) {
-      meta.removeAttribute('media');
-      meta.setAttribute('content', themeColor);
-    });
-    if (save) {
-      try {
-        if (theme === 'auto') localStorage.removeItem('ukraine-at-war-theme');
-        else localStorage.setItem('ukraine-at-war-theme', theme);
-      } catch (e) {}
-    }
-  }
-
-  var savedTheme = null;
-  try { savedTheme = localStorage.getItem('ukraine-at-war-theme'); } catch (e) {}
-  if (savedTheme === 'dark' || savedTheme === 'light') {
-    applyTheme(savedTheme, false);
-  } else {
-    /* No override: retain the device's automatic light/dark preference. */
-    applyTheme('auto', false);
-  }
-
-  buttons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      applyTheme(button.getAttribute('data-theme-choice'), true);
-    });
-  });
-
-  if (media && media.addEventListener) {
-    media.addEventListener('change', function () {
-      var saved = null;
-      try { saved = localStorage.getItem('ukraine-at-war-theme'); } catch (e) {}
-      if (saved !== 'dark' && saved !== 'light') {
-        buttons.forEach(function (button) {
-          button.setAttribute('aria-pressed', String(button.getAttribute('data-theme-choice') === 'auto'));
-        });
-        themeMetas.forEach(function (meta) {
-          meta.removeAttribute('media');
-          meta.setAttribute('content', systemTheme() === 'dark' ? '#111110' : '#ffffff');
-        });
-      }
-    });
-  }
-})();
-</script>
 </body>
 </html>
