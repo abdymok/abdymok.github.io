@@ -27,8 +27,10 @@
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
+    :root:not([data-theme]) { --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
   }
+  :root[data-theme="white"] { color-scheme: light; --bg: #ffffff; --fg: #111110; --muted: #5e5d58; --rule: #d8d6cf; --red: #d00; }
+  :root[data-theme="black"] { color-scheme: dark; --bg: #111110; --fg: #ecebe6; --muted: #a2a19a; --rule: #34342f; --red: #ff4a3d; }
 
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -68,8 +70,10 @@
     mix-blend-mode: multiply;
   }
   @media (prefers-color-scheme: dark) {
-    .emblem img { filter: brightness(1.03) invert(1); mix-blend-mode: screen; }
+    :root:not([data-theme]) .emblem img { filter: brightness(1.03) invert(1); mix-blend-mode: screen; }
   }
+  :root[data-theme="black"] .emblem img { filter: brightness(1.03) invert(1); mix-blend-mode: screen; }
+  :root[data-theme="white"] .emblem img { filter: brightness(1.03); mix-blend-mode: multiply; }
 
   /* title and navigation */
   h1 {
@@ -106,8 +110,22 @@
     margin-top: 56px; padding-bottom: 20px;
     font-size: 15px; color: var(--muted);
   }
+  .footer-left { display: flex; align-items: center; gap: 18px; }
+  .theme-switch { display: inline-flex; align-items: center; gap: 9px; }
+  .theme-switch button {
+    appearance: none; border: 0; background: none; color: var(--muted);
+    padding: 12px 0; font: inherit; font-size: 13px; cursor: pointer;
+  }
+  .theme-switch button[aria-pressed="true"] { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .theme-switch button:hover { color: var(--fg); }
   footer a { display: inline-block; padding: 12px 0 12px 16px; }
   footer a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  @media (max-width: 420px) {
+    .footer-left { gap: 12px; }
+    .theme-switch { gap: 7px; }
+    .theme-switch button { font-size: 12px; }
+    footer { font-size: 14px; }
+  }
 
   /* wider screens: title left, navigation right */
   @media (min-width: 860px) {
@@ -140,8 +158,8 @@
       <div class="intro">
         <h1>ukraine@war</h1>
         <p class="tagline">Dispatches from Kyiv, and the record behind them.</p>
-        <p class="statusline"><time datetime="2026-11-06">Updated Nov. 6, 2026</time> · <a href="/40/articles/critical-infrastructure-damage.html">254 deaths documented in tracked incidents*</a> · <a href="/40/articles/critical-infrastructure-damage.html">254 Kyiv air alerts · 221h 33m under alert</a></p>
-        <p class="statusnote">*Provisional subtotal for selected incidents, not a complete national count. Figures are current through Nov. 6.</p>
+        <p class="statusline"><time datetime="2026-11-07">Updated Nov. 7, 2026</time> · <a href="/40/articles/critical-infrastructure-damage.html">254 deaths documented in tracked incidents*</a> · <a href="/40/articles/critical-infrastructure-damage.html">262 Kyiv air alerts · 226h 6m under alert</a></p>
+        <p class="statusnote">*Provisional fatality subtotal for selected incidents, not a complete national count. Fatality figures are through Nov. 6. Kyiv air-alert figures are through the Nov. 6 all-clear.</p>
       </div>
 
       <nav aria-label="Sections">
@@ -187,10 +205,112 @@
   </main>
 
   <footer>
-    <span>Kyiv</span>
+    <div class="footer-left">
+      <span>Kyiv</span>
+      <div class="theme-switch" role="group" aria-label="Colour theme">
+        <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+        <button type="button" data-theme-choice="white" aria-pressed="false">White</button>
+        <button type="button" data-theme-choice="black" aria-pressed="false">Black</button>
+      </div>
+    </div>
     <a href="https://abdymok.substack.com">Subscribe on Substack</a>
   </footer>
 
 </div>
+
+<script>
+(async function syncChronologyStatus() {
+  const chronologyUrl = "/40/articles/critical-infrastructure-damage.html";
+  try {
+    const response = await fetch(chronologyUrl, { cache: "no-store" });
+    if (!response.ok) return;
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    const updated = doc.querySelector(".updated-row .updated");
+    const date = updated && updated.querySelector("time");
+    const deaths = doc.querySelector('[data-measure="civilian-deaths"] .dashboard-value');
+    const alerts = doc.querySelector('[data-measure="alerts"] .dashboard-value');
+    const alertHours = doc.querySelector('[data-measure="alert-hours"] .dashboard-detail-collapse > summary');
+    if (!updated || !date || !deaths || !alerts || !alertHours) return;
+
+    const duration = alertHours.textContent.match(/(\d+)\s+days?,\s*(\d+)\s+hours?\s+and\s+(\d+)\s+minutes?/i);
+    const updatedText = updated.textContent.replace(/\s+/g, " ").trim();
+    const fatalityDate = updatedText.match(/fatality subtotal.*?through\s+(.+?)\.\s+Kyiv air alerts/i);
+    const alertDate = updatedText.match(/under alert through the\s+(.+?)\.\s+The alerts\.in\.ua/i);
+    if (!duration || !fatalityDate || !alertDate) return;
+
+    const totalHours = Number(duration[1]) * 24 + Number(duration[2]);
+    const dateLabel = new Intl.DateTimeFormat("en-US", {
+      month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
+    }).format(new Date(date.getAttribute("datetime") + "T12:00:00Z"));
+
+    const status = document.querySelector(".statusline");
+    const note = document.querySelector(".statusnote");
+    if (!status || !note) return;
+
+    const time = document.createElement("time");
+    time.dateTime = date.getAttribute("datetime");
+    time.textContent = "Updated " + dateLabel;
+
+    const deathsLink = document.createElement("a");
+    deathsLink.href = chronologyUrl;
+    deathsLink.textContent = deaths.textContent.trim() + " deaths documented in tracked incidents*";
+
+    const alertsLink = document.createElement("a");
+    alertsLink.href = chronologyUrl;
+    alertsLink.textContent = alerts.textContent.trim() + " Kyiv air alerts · " +
+      totalHours + "h " + duration[3] + "m under alert";
+
+    status.replaceChildren(time, document.createTextNode(" · "), deathsLink,
+      document.createTextNode(" · "), alertsLink);
+    note.textContent = "*Provisional fatality subtotal for selected incidents, not a complete national count. Fatality figures are through " +
+      fatalityDate[1].trim() + ". Kyiv air-alert figures are through the " + alertDate[1].trim() + ".";
+  } catch (_) {
+    // Keep the published fallback figures if the chronology cannot be reached.
+  }
+})();
+</script>
+<script>
+(() => {
+  const key = "ukraine-at-war-theme";
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll("[data-theme-choice]");
+  const effectiveTheme = choice => {
+    if (choice !== "auto") return choice;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "black" : "white";
+  };
+  const setTheme = choice => {
+    current = choice;
+    if (choice === "auto") {
+      delete root.dataset.theme;
+      try { localStorage.removeItem(key); } catch (_) {}
+    } else {
+      root.dataset.theme = choice;
+      try { localStorage.setItem(key, choice); } catch (_) {}
+    }
+    buttons.forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.themeChoice === choice));
+    });
+    const color = effectiveTheme(choice) === "black" ? "#111110" : "#ffffff";
+    document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+      meta.setAttribute("content", color);
+      meta.removeAttribute("media");
+    });
+  };
+  let current = "auto";
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved === "white" || saved === "black") current = saved;
+  } catch (_) {}
+  buttons.forEach(button => button.addEventListener("click", () => setTheme(button.dataset.themeChoice)));
+  setTheme(current);
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => {
+      if (current === "auto") setTheme("auto");
+    });
+  }
+})();
+</script>
 </body>
 </html>
