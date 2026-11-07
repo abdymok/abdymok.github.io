@@ -87,9 +87,6 @@
     font: 400 19px/1.35 var(--serif);
     color: var(--muted);
   }
-  .statusline { margin: 18px 0 0; max-width: 42ch; font-size: 12px; line-height: 1.55; color: var(--muted); }
-  .statusline a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  .statusnote { margin: 3px 0 0; max-width: 42ch; font-size: 11px; line-height: 1.45; color: var(--muted); }
 
   nav ul { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
   nav li { border-top: 1px solid var(--rule); }
@@ -160,8 +157,6 @@
       <div class="intro">
         <h1>ukraine@war</h1>
         <p class="tagline">Dispatches from Kyiv, and the record behind them.</p>
-        <p class="statusline"><time datetime="2026-11-07">Updated Nov. 7, 2026</time> · <a href="/40/articles/critical-infrastructure-damage.html">254 deaths documented in tracked incidents*</a> · <a href="/40/articles/critical-infrastructure-damage.html">262 Kyiv air alerts · 226h 6m under alert</a></p>
-        <p class="statusnote">*Provisional fatality subtotal for selected incidents, not a complete national count. Fatality figures are through Nov. 6. Kyiv air-alert figures are through the Nov. 6 all-clear.</p>
       </div>
 
       <nav aria-label="Sections">
@@ -220,59 +215,6 @@
 
 </div>
 
-<script>
-(async function syncChronologyStatus() {
-  const chronologyUrl = "/40/articles/critical-infrastructure-damage.html";
-  try {
-    const response = await fetch(chronologyUrl, { cache: "no-store" });
-    if (!response.ok) return;
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, "text/html");
-
-    const updated = doc.querySelector(".updated-row .updated");
-    const date = updated && updated.querySelector("time");
-    const deaths = doc.querySelector('[data-measure="civilian-deaths"] .dashboard-value');
-    const alerts = doc.querySelector('[data-measure="alerts"] .dashboard-value');
-    const alertHours = doc.querySelector('[data-measure="alert-hours"] .dashboard-detail-collapse > summary');
-    if (!updated || !date || !deaths || !alerts || !alertHours) return;
-
-    const duration = alertHours.textContent.match(/(\d+)\s+days?,\s*(\d+)\s+hours?\s+and\s+(\d+)\s+minutes?/i);
-    const updatedText = updated.textContent.replace(/\s+/g, " ").trim();
-    const fatalityDate = updatedText.match(/fatality subtotal.*?through\s+(.+?)\.\s+Kyiv air alerts/i);
-    const alertDate = updatedText.match(/under alert through the\s+(.+?)\.\s+The alerts\.in\.ua/i);
-    if (!duration || !fatalityDate || !alertDate) return;
-
-    const totalHours = Number(duration[1]) * 24 + Number(duration[2]);
-    const dateLabel = new Intl.DateTimeFormat("en-US", {
-      month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
-    }).format(new Date(date.getAttribute("datetime") + "T12:00:00Z"));
-
-    const status = document.querySelector(".statusline");
-    const note = document.querySelector(".statusnote");
-    if (!status || !note) return;
-
-    const time = document.createElement("time");
-    time.dateTime = date.getAttribute("datetime");
-    time.textContent = "Updated " + dateLabel;
-
-    const deathsLink = document.createElement("a");
-    deathsLink.href = chronologyUrl;
-    deathsLink.textContent = deaths.textContent.trim() + " deaths documented in tracked incidents*";
-
-    const alertsLink = document.createElement("a");
-    alertsLink.href = chronologyUrl;
-    alertsLink.textContent = alerts.textContent.trim() + " Kyiv air alerts · " +
-      totalHours + "h " + duration[3] + "m under alert";
-
-    status.replaceChildren(time, document.createTextNode(" · "), deathsLink,
-      document.createTextNode(" · "), alertsLink);
-    note.textContent = "*Provisional fatality subtotal for selected incidents, not a complete national count. Fatality figures are through " +
-      fatalityDate[1].trim() + ". Kyiv air-alert figures are through the " + alertDate[1].trim() + ".";
-  } catch (_) {
-    // Keep the published fallback figures if the chronology cannot be reached.
-  }
-})();
-</script>
 <script>
 (() => {
   const key = "ukraine-at-war-theme";
