@@ -13,8 +13,7 @@
 <meta property="og:site_name" content="ukraine@war">
 <meta property="og:image" content="https://abdymok.github.io/monowheeler.png">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M3 32H45M7.5 32V26M18 32V26M28.5 32V26M39 32V14'/%3E%3C/svg%3E">
 <style>
   :root {
@@ -46,7 +45,8 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
   a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
-  a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  a:focus-visible,
+  button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   svg { display: block; flex: none; }
 
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
@@ -65,7 +65,7 @@
   .emblem { margin: 4px -20px 36px; }
   .emblem img {
     display: block; width: 100%; height: auto;
-    aspect-ratio: 3 / 1; object-fit: cover; object-position: 50% 58%;
+    aspect-ratio: 2.4 / 1; object-fit: cover; object-position: 50% 58%;
     filter: brightness(1.03);
     mix-blend-mode: multiply;
   }
@@ -88,6 +88,8 @@
     color: var(--muted);
   }
 
+  .intro { margin-bottom: 24px; }
+
   nav ul { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
   nav li { border-top: 1px solid var(--rule); }
   nav a {
@@ -100,6 +102,8 @@
   .arrow { font-size: 18px; color: var(--muted); padding-left: 8px; }
   nav a:hover .label { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
   nav a:hover .arrow { color: var(--fg); }
+  nav li a .arrow { transition: transform 0.15s ease; }
+  nav li a:hover .arrow { transform: translateX(4px); }
 
   /* footer */
   footer {
@@ -112,7 +116,7 @@
   .theme-switch { display: inline-flex; align-items: center; justify-self: center; gap: 9px; }
   .theme-switch button {
     appearance: none; border: 0; background: none; color: var(--muted);
-    padding: 12px 0; font: inherit; font-size: 13px; cursor: pointer;
+    padding: 10px 6px; font: inherit; font-size: 13px; cursor: pointer;
   }
   .theme-switch button[aria-pressed="true"] { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
   .theme-switch button:hover { color: var(--fg); }
@@ -130,10 +134,11 @@
   @media (min-width: 860px) {
     .wrap { padding: 0 32px; }
     .bar { padding-top: 24px; }
-    .emblem { margin: 16px 0 64px; }
+    .intro { margin-bottom: 0; }
+    .emblem { margin: 16px 0 44px; }
     .grid { display: grid; grid-template-columns: 5fr 7fr; column-gap: 72px; align-items: start; }
     h1 { font-size: 44px; padding-top: 22px; }
-    footer { margin-top: 96px; padding-bottom: 32px; }
+    footer { margin-top: 56px; padding-bottom: 32px; }
   }
 </style>
 </head>
@@ -161,14 +166,14 @@
         <ul>
           <li>
             <a href="/40/articles/critical-infrastructure-damage.html">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><path d="M1 29 H47"/><path d="M5 29 Q24 1 43 29"/><path d="M14.5 29 V18.5"/><path d="M33.5 29 V18.5"/><path d="M20.5 33 L27.5 25.5"/></svg>
-              <span><span class="label">Damage to critical infrastructure</span></span>
+              <svg class="nav-icon" width="48" height="48" viewBox="0 0 96 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><path d="M1 22 H95"/><path d="M10 22 Q48 -4 86 22"/><path d="M29 22 V12.5"/><path d="M67 22 V12.5"/><path d="M42 29 L55 15"/></svg>
+              <span><span class="label">Damage to critical infrastructure</span><span class="desc">Kyiv chronology, damage counts, and air alerts</span></span>
               <span class="arrow" aria-hidden="true">&rarr;</span>
             </a>
           </li>
           <li>
             <a href="/40/articles/data-center-damage.html">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><rect x="4" y="4" width="10" height="10"/><rect x="19" y="4" width="10" height="10"/><path d="M19 9 H29"/><rect x="34" y="4" width="10" height="10"/><rect x="4" y="19" width="10" height="10"/><path d="M4 24 H14"/><rect x="19" y="19" width="10" height="10"/><rect x="4" y="34" width="10" height="10"/><rect x="19" y="36" width="10" height="10"/><rect x="34" y="34" width="10" height="10"/><path d="M39 34 V44"/></svg>
+              <svg class="nav-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><rect x="4" y="4" width="10" height="10"/><rect x="19" y="4" width="10" height="10"/><path d="M19 9 H29"/><rect x="34" y="4" width="10" height="10"/><rect x="4" y="19" width="10" height="10"/><path d="M4 24 H14"/><rect x="19" y="19" width="10" height="10"/><rect x="4" y="34" width="10" height="10"/><rect x="19" y="36" width="10" height="10"/><rect x="34" y="34" width="10" height="10"/><path d="M39 34 V44"/></svg>
               <span><span class="label">Data center</span><span class="desc">Damage to data centers</span></span>
               <span class="arrow" aria-hidden="true">&rarr;</span>
             </a>
@@ -182,14 +187,14 @@
           </li>
           <li>
             <a href="/collection/">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><defs><clipPath id="fragment"><polygon points="4,3.5 44,4.5 45,44 3,45"/></clipPath></defs><g clip-path="url(#fragment)"><path d="M0 31 C11 7 24 41 49 13" stroke-width="2.8"/><path d="M17 0 C13 15 22 30 14 49" stroke-width="1.7"/><path d="M27 31 L42 35" stroke-width="3.4"/><path d="M30 9 C39 2 44 12 34 17" stroke-width="1.5"/><path d="M6 41 L12 35" stroke-width="1.4"/></g></svg>
+              <svg class="nav-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><defs><clipPath id="fragment"><polygon points="4,3.5 44,4.5 45,44 3,45"/></clipPath></defs><g clip-path="url(#fragment)"><path d="M0 31 C11 7 24 41 49 13" stroke-width="2.8"/><path d="M17 0 C13 15 22 30 14 49" stroke-width="1.7"/><path d="M27 31 L42 35" stroke-width="3.4"/><path d="M30 9 C39 2 44 12 34 17" stroke-width="1.5"/><path d="M6 41 L12 35" stroke-width="1.4"/></g></svg>
               <span><span class="label">Collection</span><span class="desc">Visual projects and experiments</span></span>
               <span class="arrow" aria-hidden="true">&rarr;</span>
             </a>
           </li>
           <li>
-            <a href="https://abdymok.github.io/bibliography/">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="5" width="30" height="38" rx="2"/><path d="M14 14h6M24 14h10M14 23h6M24 23h10M14 32h6M24 32h10"/><path d="M24 17.5h7M24 26.5h7M24 35.5h7" stroke-width="1.5" opacity=".55"/></svg>
+            <a href="/bibliography/">
+              <svg class="nav-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><rect x="9" y="5" width="30" height="38"/><path d="M14 14h6M24 14h10M14 23h6M24 23h10M14 32h6M24 32h10"/><path d="M24 17.5h7M24 26.5h7M24 35.5h7"/></svg>
               <span><span class="label">Bibliography</span><span class="desc">An annotated guide to the ukraine@war archive.</span></span>
               <span class="arrow" aria-hidden="true">&rarr;</span>
             </a>
