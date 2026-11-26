@@ -12,6 +12,13 @@
 <meta property="og:url" content="https://abdymok.github.io/">
 <meta property="og:site_name" content="ukraine@war">
 <meta property="og:image" content="https://abdymok.github.io/monowheeler.png">
+<meta property="og:image:alt" content="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
+<meta property="og:image:width" content="1743">
+<meta property="og:image:height" content="902">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ukraine@war">
+<meta name="twitter:description" content="Reporting, infrastructure records and an archive from Ukraine.">
+<meta name="twitter:image" content="https://abdymok.github.io/monowheeler.png">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23111' stroke-width='3.5' stroke-linecap='square'%3E%3Cpath d='M3 32H45M7.5 32V26M18 32V26M28.5 32V26M39 32V14'/%3E%3C/svg%3E">
@@ -104,6 +111,10 @@
   nav a:hover .arrow { color: var(--fg); }
   nav li a .arrow { transition: transform 0.15s ease; }
   nav li a:hover .arrow { transform: translateX(4px); }
+  @media (prefers-reduced-motion: reduce) {
+    nav li a .arrow { transition: none; }
+    nav li a:hover .arrow { transform: none; }
+  }
 
   /* footer */
   footer {
@@ -155,7 +166,7 @@
 
   <main>
     <figure class="emblem">
-      <img src="monowheeler.png" width="1743" height="902" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
+      <img src="monowheeler.png" width="1743" height="902" fetchpriority="high" decoding="async" alt="Pen drawing of a runner between two electric unicycle riders on the Dnipro bank, with the Kyiv skyline behind them.">
     </figure>
 
     <div class="grid">
